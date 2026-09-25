@@ -1,0 +1,293 @@
+<div class="page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Edit Complaint</h1>
+      <p>Update the student complaint record</p>
+    </div>
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="cancel()">
+      ← Back to Complaints
+    </button>
+
+  </div>
+
+
+  <div
+    *ngIf="errorMessage"
+    class="alert error">
+    {{ errorMessage }}
+  </div>
+
+
+  <div
+    *ngIf="successMessage"
+    class="alert success">
+    {{ successMessage }}
+  </div>
+
+
+  <div
+    *ngIf="loadingComplaint || loadingStudents"
+    class="loading">
+    Loading complaint...
+  </div>
+
+
+  <form
+    *ngIf="!loadingComplaint && !loadingStudents"
+    [formGroup]="complaintForm"
+    (ngSubmit)="updateComplaint()"
+    class="form-card">
+
+
+    <div class="form-section">
+
+      <h2>Complaint Information</h2>
+
+
+      <div class="form-grid">
+
+
+        <div class="form-group">
+
+          <label for="studentId">
+            Student <span>*</span>
+          </label>
+
+          <select
+            id="studentId"
+            formControlName="studentId">
+
+            <option value="">
+              Select Student
+            </option>
+
+            <option
+              *ngFor="let student of students"
+              [value]="student.id">
+
+              {{ getStudentName(student) }}
+
+            </option>
+
+          </select>
+
+          <small
+            class="field-error"
+            *ngIf="
+              complaintForm.get('studentId')?.touched &&
+              complaintForm.get('studentId')?.hasError('required')
+            ">
+            Student is required.
+          </small>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="subject">
+            Subject <span>*</span>
+          </label>
+
+          <input
+            id="subject"
+            type="text"
+            formControlName="subject"
+            placeholder="Enter complaint subject"
+            maxlength="150">
+
+          <small
+            class="field-error"
+            *ngIf="
+              complaintForm.get('subject')?.touched &&
+              complaintForm.get('subject')?.hasError('required')
+            ">
+            Complaint subject is required.
+          </small>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="complaintDate">
+            Complaint Date <span>*</span>
+          </label>
+
+          <input
+            id="complaintDate"
+            type="date"
+            formControlName="complaintDate">
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="priority">
+            Priority <span>*</span>
+          </label>
+
+          <select
+            id="priority"
+            formControlName="priority">
+
+            <option value="LOW">
+              Low
+            </option>
+
+            <option value="MEDIUM">
+              Medium
+            </option>
+
+            <option value="HIGH">
+              High
+            </option>
+
+            <option value="URGENT">
+              Urgent
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="status">
+            Status <span>*</span>
+          </label>
+
+          <select
+            id="status"
+            formControlName="status">
+
+            <option value="OPEN">
+              Open
+            </option>
+
+            <option value="IN_PROGRESS">
+              In Progress
+            </option>
+
+            <option value="RESOLVED">
+              Resolved
+            </option>
+
+            <option value="CLOSED">
+              Closed
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group full-width">
+
+          <label for="description">
+            Description <span>*</span>
+          </label>
+
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="5"
+            placeholder="Describe the complaint in detail">
+          </textarea>
+
+          <small
+            class="field-error"
+            *ngIf="
+              complaintForm.get('description')?.touched &&
+              complaintForm.get('description')?.hasError('required')
+            ">
+            Complaint description is required.
+          </small>
+
+          <small
+            class="field-error"
+            *ngIf="
+              complaintForm.get('description')?.touched &&
+              complaintForm.get('description')?.hasError('minlength')
+            ">
+            Description must contain at least 5 characters.
+          </small>
+
+        </div>
+
+
+        <div class="form-group full-width">
+
+          <label for="resolution">
+            Resolution
+          </label>
+
+          <textarea
+            id="resolution"
+            formControlName="resolution"
+            rows="4"
+            placeholder="Enter resolution details">
+          </textarea>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="resolvedDate">
+            Resolved Date
+          </label>
+
+          <input
+            id="resolvedDate"
+            type="date"
+            formControlName="resolvedDate">
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="cancel-button"
+        (click)="cancel()"
+        [disabled]="saving">
+        Cancel
+      </button>
+
+
+      <button
+        type="submit"
+        class="save-button"
+        [disabled]="saving">
+
+        <span *ngIf="!saving">
+          Update Complaint
+        </span>
+
+        <span *ngIf="saving">
+          Updating...
+        </span>
+
+      </button>
+
+    </div>
+
+
+  </form>
+
+</div>

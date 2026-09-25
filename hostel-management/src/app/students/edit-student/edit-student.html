@@ -1,0 +1,335 @@
+<div class="edit-student-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1>Edit Student</h1>
+      <p>Update the student's hostel information.</p>
+    </div>
+
+    <button
+      type="button"
+      class="back-btn"
+      routerLink="/students"
+    >
+      ← Back to Students
+    </button>
+  </div>
+
+
+  <!-- Loading -->
+  @if (loading) {
+
+    <div class="loading-card">
+      <div class="loader"></div>
+      <p>Loading student details...</p>
+    </div>
+
+  }
+
+
+  <!-- Form -->
+  @else {
+
+    <form
+      [formGroup]="studentForm"
+      (ngSubmit)="updateStudent()"
+      class="student-form"
+    >
+
+      <!-- Personal Information -->
+      <div class="form-card">
+
+        <div class="form-card-header">
+          <h2>Personal Information</h2>
+          <p>Update the student's basic information.</p>
+        </div>
+
+        <div class="form-grid">
+
+          <!-- First Name -->
+          <div class="form-group">
+            <label>First Name *</label>
+
+            <input
+              type="text"
+              formControlName="firstName"
+              placeholder="Enter first name"
+            />
+
+            @if (
+              studentForm.get('firstName')?.touched &&
+              studentForm.get('firstName')?.invalid
+            ) {
+              <small class="error">
+                First name is required.
+              </small>
+            }
+          </div>
+
+
+          <!-- Last Name -->
+          <div class="form-group">
+            <label>Last Name *</label>
+
+            <input
+              type="text"
+              formControlName="lastName"
+              placeholder="Enter last name"
+            />
+
+            @if (
+              studentForm.get('lastName')?.touched &&
+              studentForm.get('lastName')?.invalid
+            ) {
+              <small class="error">
+                Last name is required.
+              </small>
+            }
+          </div>
+
+
+          <!-- Date of Birth -->
+          <div class="form-group">
+            <label>Date of Birth *</label>
+
+            <input
+              type="date"
+              formControlName="dateOfBirth"
+            />
+          </div>
+
+
+          <!-- Gender -->
+          <div class="form-group">
+            <label>Gender *</label>
+
+            <select formControlName="gender">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+
+          <!-- Email -->
+          <div class="form-group">
+            <label>Email *</label>
+
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="Enter email"
+            />
+
+            @if (
+              studentForm.get('email')?.touched &&
+              studentForm.get('email')?.invalid
+            ) {
+              <small class="error">
+                Enter a valid email address.
+              </small>
+            }
+          </div>
+
+
+          <!-- Phone -->
+          <div class="form-group">
+            <label>Phone *</label>
+
+            <input
+              type="text"
+              formControlName="phone"
+              placeholder="10-digit phone number"
+              maxlength="10"
+            />
+          </div>
+
+
+          <!-- Address -->
+          <div class="form-group full-width">
+            <label>Address *</label>
+
+            <textarea
+              formControlName="address"
+              rows="3"
+              placeholder="Enter address"
+            ></textarea>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Academic Information -->
+      <div class="form-card">
+
+        <div class="form-card-header">
+          <h2>Academic Information</h2>
+          <p>Update the student's academic details.</p>
+        </div>
+
+        <div class="form-grid">
+
+          <!-- Student ID -->
+          <div class="form-group">
+            <label>Student ID *</label>
+
+            <input
+              type="text"
+              formControlName="studentId"
+              placeholder="Enter student ID"
+            />
+          </div>
+
+
+          <!-- Course -->
+          <div class="form-group">
+            <label>Course *</label>
+
+            <input
+              type="text"
+              formControlName="course"
+              placeholder="e.g. B.Tech CSE"
+            />
+          </div>
+
+
+          <!-- Year -->
+          <div class="form-group">
+            <label>Year *</label>
+
+            <select formControlName="year">
+              <option value="">Select Year</option>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year</option>
+            </select>
+          </div>
+
+
+          <!-- Department -->
+          <div class="form-group">
+            <label>Department *</label>
+
+            <input
+              type="text"
+              formControlName="department"
+              placeholder="Enter department"
+            />
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Guardian Information -->
+      <div class="form-card">
+
+        <div class="form-card-header">
+          <h2>Guardian Information</h2>
+          <p>Update parent or guardian details.</p>
+        </div>
+
+        <div class="form-grid">
+
+          <!-- Guardian Name -->
+          <div class="form-group">
+            <label>Guardian Name *</label>
+
+            <input
+              type="text"
+              formControlName="guardianName"
+              placeholder="Enter guardian name"
+            />
+          </div>
+
+
+          <!-- Guardian Phone -->
+          <div class="form-group">
+            <label>Guardian Phone *</label>
+
+            <input
+              type="text"
+              formControlName="guardianPhone"
+              placeholder="10-digit phone number"
+              maxlength="10"
+            />
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Hostel Information -->
+      <div class="form-card">
+
+        <div class="form-card-header">
+          <h2>Hostel Information</h2>
+          <p>Update room and admission details.</p>
+        </div>
+
+        <div class="form-grid">
+
+          <!-- Room -->
+          <div class="form-group">
+            <label>Room Number</label>
+
+            <input
+              type="text"
+              formControlName="roomNumber"
+              placeholder="Enter room number"
+            />
+          </div>
+
+
+          <!-- Admission Date -->
+          <div class="form-group">
+            <label>Admission Date *</label>
+
+            <input
+              type="date"
+              formControlName="admissionDate"
+            />
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          routerLink="/students"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="save-btn"
+          [disabled]="saving"
+        >
+          @if (saving) {
+            Updating...
+          } @else {
+            Update Student
+          }
+        </button>
+
+      </div>
+
+    </form>
+
+  }
+
+</div>

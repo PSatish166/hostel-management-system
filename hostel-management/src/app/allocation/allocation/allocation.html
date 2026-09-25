@@ -1,0 +1,358 @@
+<div class="allocation-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Room Allocation</h1>
+
+      <p>
+        Manage student room and bed allocations.
+      </p>
+    </div>
+
+    @if (isAdmin) {
+
+      <button
+        type="button"
+        class="add-btn"
+        routerLink="/allocation/add"
+      >
+        + New Allocation
+      </button>
+
+    }
+
+  </div>
+
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <div class="summary-icon blue">
+        🛏️
+      </div>
+
+      <div class="summary-content">
+
+        <span>Total Allocations</span>
+
+        <strong>
+          {{ allocations.length }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon green">
+        ✓
+      </div>
+
+      <div class="summary-content">
+
+        <span>Active Allocations</span>
+
+        <strong>
+          {{ getActiveAllocations() }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon orange">
+        🏢
+      </div>
+
+      <div class="summary-content">
+
+        <span>Occupied Beds</span>
+
+        <strong>
+          {{ getOccupiedBeds() }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon purple">
+        🎓
+      </div>
+
+      <div class="summary-content">
+
+        <span>Allocated Students</span>
+
+        <strong>
+          {{ getAllocatedStudents() }}
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Allocations Card -->
+  <div class="allocation-card">
+
+    <!-- Toolbar -->
+    <div class="card-toolbar">
+
+      <div class="section-title">
+
+        <h3>All Allocations</h3>
+
+        <p>
+          List of student room allocations
+        </p>
+
+      </div>
+
+
+      <div class="toolbar-actions">
+
+        <div class="search-box">
+
+          <span>🔍</span>
+
+          <input
+            type="text"
+            placeholder="Search allocations..."
+            (input)="searchAllocations($any($event.target).value)"
+          >
+
+        </div>
+
+
+        <button
+          type="button"
+          class="filter-btn"
+        >
+          ⚙ Filter
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- Allocation Table -->
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Student</th>
+
+            <th>Room</th>
+
+            <th>Bed</th>
+
+            <th>Allocation Date</th>
+
+            <th>Status</th>
+
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          @if (loading) {
+
+            <tr>
+
+              <td
+                colspan="6"
+                class="message-cell"
+              >
+                Loading allocations...
+              </td>
+
+            </tr>
+
+          }
+
+          @else if (
+            filteredAllocations.length === 0
+          ) {
+
+            <tr>
+
+              <td
+                colspan="6"
+                class="message-cell"
+              >
+                No allocations found.
+              </td>
+
+            </tr>
+
+          }
+
+          @else {
+
+            @for (
+              allocation of filteredAllocations;
+              track allocation.id
+            ) {
+
+              <tr>
+
+                <!-- Student -->
+                <td>
+
+                  <div class="student-info">
+
+                    <div class="student-avatar">
+
+                      {{
+                        allocation.studentName
+                          ?.charAt(0)
+                          ?.toUpperCase() || '?'
+                      }}
+
+                    </div>
+
+
+                    <div class="student-details">
+
+                      <strong>
+                        {{ allocation.studentName }}
+                      </strong>
+
+                      <span>
+                        {{ allocation.studentId }}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <!-- Room -->
+                <td>
+
+                  <strong class="room-number">
+                    {{ allocation.roomNumber }}
+                  </strong>
+
+                </td>
+
+
+                <!-- Bed -->
+                <td>
+                  {{ allocation.bedNumber }}
+                </td>
+
+
+                <!-- Date -->
+                <td>
+                  {{ allocation.allocationDate }}
+                </td>
+
+
+                <!-- Status -->
+                <td>
+
+                  <span
+                    class="status"
+                    [class.active]="
+                      allocation.status === 'ACTIVE'
+                    "
+                    [class.vacated]="
+                      allocation.status === 'VACATED'
+                    "
+                  >
+                    {{ allocation.status }}
+                  </span>
+
+                </td>
+
+
+                <!-- Actions -->
+                <td>
+
+                  <div class="action-buttons">
+
+                    @if (isAdmin) {
+
+                      <!-- Edit -->
+                      <button
+                        type="button"
+                        class="edit-btn"
+                        title="Edit"
+                        (click)="editAllocation(allocation.id)"
+                      >
+                        ✏️
+                      </button>
+
+
+                      <!-- Delete -->
+                      <button
+                        type="button"
+                        class="delete-btn"
+                        title="Delete"
+                        (click)="deleteAllocation(allocation.id)"
+                      >
+                        🗑️
+                      </button>
+
+                    }
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- Pagination -->
+    <div class="pagination">
+
+      <span>
+
+        Showing
+        {{ filteredAllocations.length }}
+        allocation(s)
+
+      </span>
+
+    </div>
+
+  </div>
+
+</div>

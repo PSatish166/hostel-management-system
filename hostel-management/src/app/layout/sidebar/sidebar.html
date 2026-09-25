@@ -1,0 +1,80 @@
+<aside class="sidebar">
+
+  <div class="menu-section">
+
+    <p class="menu-title">MAIN MENU</p>
+
+    <a class="menu-item" routerLink="/">
+      <span>🏠</span>
+      <span>Dashboard</span>
+    </a>
+
+    <a class="menu-item" routerLink="/students">
+      <span>👨‍🎓</span>
+      <span>Students</span>
+    </a>
+
+    <a class="menu-item" routerLink="/rooms">
+      <span>🏢</span>
+      <span>Rooms</span>
+    </a>
+
+    <a class="menu-item" routerLink="/allocation">
+      <span>🛏️</span>
+      <span>Allocation</span>
+    </a>
+
+    <a class="menu-item" routerLink="/fees">
+      <span>💰</span>
+      <span>Fees</span>
+    </a>
+
+    <a class="menu-item" routerLink="/complaints">
+      <span>📢</span>
+      <span>Complaints</span>
+    </a>
+
+    <a class="menu-item" routerLink="/attendance">
+      <span>📋</span>
+      <span>Attendance</span>
+    </a>
+
+    <a class="menu-item" routerLink="/visitors">
+      <span>👥</span>
+      <span>Visitors</span>
+    </a>
+
+    @if (isAdmin) {
+
+      <a class="menu-item" routerLink="/reports">
+        <span>📊</span>
+        <span>Reports</span>
+      </a>
+
+    }
+
+  </div>
+
+  <div class="sidebar-bottom">
+
+    @if (isAdmin) {
+
+      <a class="menu-item" routerLink="/settings">
+        <span>⚙️</span>
+        <span>Settings</span>
+      </a>
+
+    }
+
+    <a
+      class="menu-item logout"
+      href="javascript:void(0)"
+      (click)="logout()"
+    >
+      <span>🚪</span>
+      <span>Logout</span>
+    </a>
+
+  </div>
+
+</aside>

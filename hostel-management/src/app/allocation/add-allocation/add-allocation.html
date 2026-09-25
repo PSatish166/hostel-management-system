@@ -1,0 +1,330 @@
+<div class="add-allocation-page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>New Room Allocation</h1>
+      <p>Assign a student to a room and bed.</p>
+    </div>
+
+    <a
+      routerLink="/allocation"
+      class="back-btn"
+    >
+      ← Back to Allocations
+    </a>
+
+  </div>
+
+
+  <div class="form-card">
+
+    <div class="form-header">
+
+      <h2>Allocation Details</h2>
+
+      <p>
+        Select the student, room, bed and allocation date.
+      </p>
+
+    </div>
+
+
+    <form
+      [formGroup]="allocationForm"
+      (ngSubmit)="saveAllocation()"
+    >
+
+
+      <!-- ====================================== -->
+      <!-- STUDENT -->
+      <!-- ====================================== -->
+
+      <div class="form-group">
+
+        <label for="studentId">
+          Student <span>*</span>
+        </label>
+
+        <select
+          id="studentId"
+          formControlName="studentId"
+        >
+
+          <option value="">
+            Select Student
+          </option>
+
+
+          @for (
+            student of students;
+            track $index
+          ) {
+
+            <option
+              [value]="student.id"
+            >
+
+              {{
+                (
+                  (student.firstName ?? '') +
+                  ' ' +
+                  (student.lastName ?? '')
+                ).trim()
+              }}
+
+              -
+              {{ student.studentId }}
+
+            </option>
+
+          }
+
+        </select>
+
+
+        @if (
+          allocationForm.get('studentId')?.invalid &&
+          allocationForm.get('studentId')?.touched
+        ) {
+
+          <small class="error">
+            Please select a student.
+          </small>
+
+        }
+
+      </div>
+
+
+
+      <!-- ====================================== -->
+      <!-- ROOM -->
+      <!-- ====================================== -->
+
+      <div class="form-group">
+
+        <label for="roomId">
+          Room <span>*</span>
+        </label>
+
+        <select
+          id="roomId"
+          formControlName="roomId"
+        >
+
+          <option value="">
+            Select Room
+          </option>
+
+
+          @for (
+            room of rooms;
+            track $index
+          ) {
+
+            <option
+              [value]="room.id"
+            >
+
+              {{ room.roomNumber }}
+
+              -
+
+              {{ room.roomType }}
+
+              -
+
+              {{
+                number(room.capacity ?? 0) -
+                number(room.occupiedBeds ?? 0)
+              }}
+
+              bed(s) available
+
+            </option>
+
+          }
+
+        </select>
+
+
+        @if (
+          allocationForm.get('roomId')?.invalid &&
+          allocationForm.get('roomId')?.touched
+        ) {
+
+          <small class="error">
+            Please select a room.
+          </small>
+
+        }
+
+      </div>
+
+
+
+      <!-- ====================================== -->
+      <!-- BED -->
+      <!-- ====================================== -->
+
+      <div class="form-group">
+
+        <label for="bedNumber">
+          Bed <span>*</span>
+        </label>
+
+        <select
+          id="bedNumber"
+          formControlName="bedNumber"
+        >
+
+          <option value="">
+            @if (loadingAllocations) {
+              Loading beds...
+            } @else if (
+              !allocationForm.get('roomId')?.value
+            ) {
+              Select Room First
+            } @else if (
+              beds.length === 0
+            ) {
+              No Beds Available
+            } @else {
+              Select Bed
+            }
+          </option>
+
+
+          @for (
+            bed of beds;
+            track $index
+          ) {
+
+            <option
+              [value]="bed"
+            >
+              {{ bed }}
+            </option>
+
+          }
+
+        </select>
+
+
+        @if (
+          allocationForm.get('bedNumber')?.invalid &&
+          allocationForm.get('bedNumber')?.touched
+        ) {
+
+          <small class="error">
+            Please select a bed.
+          </small>
+
+        }
+
+      </div>
+
+
+
+      <!-- ====================================== -->
+      <!-- ALLOCATION DATE -->
+      <!-- ====================================== -->
+
+      <div class="form-group">
+
+        <label for="allocationDate">
+          Allocation Date <span>*</span>
+        </label>
+
+        <input
+          id="allocationDate"
+          type="date"
+          formControlName="allocationDate"
+        >
+
+
+        @if (
+          allocationForm.get('allocationDate')?.invalid &&
+          allocationForm.get('allocationDate')?.touched
+        ) {
+
+          <small class="error">
+            Please select an allocation date.
+          </small>
+
+        }
+
+      </div>
+
+
+
+      <!-- ====================================== -->
+      <!-- STATUS -->
+      <!-- ====================================== -->
+
+      <div class="form-group">
+
+        <label for="status">
+          Status
+        </label>
+
+        <select
+          id="status"
+          formControlName="status"
+        >
+
+          <option value="ACTIVE">
+            ACTIVE
+          </option>
+
+          <option value="VACATED">
+            VACATED
+          </option>
+
+        </select>
+
+      </div>
+
+
+
+      <!-- ====================================== -->
+      <!-- ACTIONS -->
+      <!-- ====================================== -->
+
+      <div class="form-actions">
+
+        <a
+          routerLink="/allocation"
+          class="cancel-btn"
+        >
+          Cancel
+        </a>
+
+
+        <button
+          type="submit"
+          class="save-btn"
+          [disabled]="saving"
+        >
+
+          @if (saving) {
+
+            Saving...
+
+          } @else {
+
+            Allocate Room
+
+          }
+
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+
+</div>

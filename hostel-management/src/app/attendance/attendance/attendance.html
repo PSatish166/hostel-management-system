@@ -1,0 +1,376 @@
+<div class="page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Attendance</h1>
+      <p>Manage and track student attendance</p>
+    </div>
+
+    <!-- ADMIN ONLY -->
+    @if (isAdmin) {
+
+      <button
+        type="button"
+        class="add-button"
+        (click)="addAttendance()">
+
+        + Mark Attendance
+
+      </button>
+
+    }
+
+  </div>
+
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+
+    <!-- Total -->
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        📋
+      </div>
+
+      <div>
+        <p>Total Records</p>
+        <h2>{{ totalAttendance }}</h2>
+      </div>
+
+    </div>
+
+
+    <!-- Present -->
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        ✅
+      </div>
+
+      <div>
+        <p>Present</p>
+        <h2>{{ presentCount }}</h2>
+      </div>
+
+    </div>
+
+
+    <!-- Absent -->
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        ❌
+      </div>
+
+      <div>
+        <p>Absent</p>
+        <h2>{{ absentCount }}</h2>
+      </div>
+
+    </div>
+
+
+    <!-- Late -->
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        ⏰
+      </div>
+
+      <div>
+        <p>Late</p>
+        <h2>{{ lateCount }}</h2>
+      </div>
+
+    </div>
+
+
+    <!-- Leave -->
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        📝
+      </div>
+
+      <div>
+        <p>Leave</p>
+        <h2>{{ leaveCount }}</h2>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Error Message -->
+  <div
+    *ngIf="errorMessage"
+    class="alert error">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- Loading -->
+  <div
+    *ngIf="loading"
+    class="loading">
+
+    Loading attendance records...
+
+  </div>
+
+
+  <!-- Attendance Table -->
+  <div
+    *ngIf="!loading && attendance.length > 0"
+    class="table-card">
+
+    <div class="table-header">
+
+      <div>
+
+        <h2>Attendance Records</h2>
+
+        <span>
+          {{ attendance.length }} record(s)
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              ID
+            </th>
+
+            <th>
+              Student
+            </th>
+
+            <th>
+              Date
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Check In
+            </th>
+
+            <th>
+              Check Out
+            </th>
+
+            <th>
+              Remarks
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let record of attendance
+            ">
+
+            <!-- ID -->
+            <td>
+
+              #{{ record.id }}
+
+            </td>
+
+
+            <!-- Student -->
+            <td>
+
+              <strong>
+                {{ getStudentName(record) }}
+              </strong>
+
+            </td>
+
+
+            <!-- Date -->
+            <td>
+
+              {{ formatDate(
+                record.attendanceDate
+              ) }}
+
+            </td>
+
+
+            <!-- Status -->
+            <td>
+
+              <span
+                class="badge status"
+                [ngClass]="
+                  getStatusClass(
+                    record.status
+                  )
+                ">
+
+                {{ record.status }}
+
+              </span>
+
+            </td>
+
+
+            <!-- Check In -->
+            <td>
+
+              {{ formatTime(
+                record.checkInTime
+              ) }}
+
+            </td>
+
+
+            <!-- Check Out -->
+            <td>
+
+              {{ formatTime(
+                record.checkOutTime
+              ) }}
+
+            </td>
+
+
+            <!-- Remarks -->
+            <td>
+
+              <div
+                class="remarks"
+                *ngIf="record.remarks">
+
+                {{ record.remarks }}
+
+              </div>
+
+              <span
+                class="muted"
+                *ngIf="!record.remarks">
+
+                -
+
+              </span>
+
+            </td>
+
+
+            <!-- Actions -->
+            <td>
+
+              <div class="actions">
+
+                <!-- ADMIN ONLY -->
+                @if (isAdmin) {
+
+                  <button
+                    type="button"
+                    class="edit-button"
+                    (click)="
+                      editAttendance(
+                        record.id
+                      )
+                    ">
+
+                    Edit
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="delete-button"
+                    (click)="
+                      deleteAttendance(
+                        record.id
+                      )
+                    ">
+
+                    Delete
+
+                  </button>
+
+                }
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- Empty State -->
+  <div
+    *ngIf="
+      !loading &&
+      attendance.length === 0
+    "
+    class="empty-state">
+
+    <div class="empty-icon">
+      📋
+    </div>
+
+    <h2>
+      No attendance records found
+    </h2>
+
+    <p>
+      There are currently no attendance records.
+    </p>
+
+    <!-- ADMIN ONLY -->
+    @if (isAdmin) {
+
+      <button
+        type="button"
+        class="add-button"
+        (click)="addAttendance()">
+
+        + Mark First Attendance
+
+      </button>
+
+    }
+
+  </div>
+
+</div>

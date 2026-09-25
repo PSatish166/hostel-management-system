@@ -1,0 +1,91 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <div class="login-header">
+
+      <div class="login-logo">
+        🏢
+      </div>
+
+      <h1>Hostel Management</h1>
+
+      <p>Administration Portal</p>
+
+    </div>
+
+    <form
+      class="login-form"
+      (ngSubmit)="login()"
+    >
+
+      <div class="form-group">
+
+        <label for="username">
+          Username
+        </label>
+
+        <input
+          id="username"
+          type="text"
+          name="username"
+          [(ngModel)]="username"
+          placeholder="Enter your username"
+          autocomplete="username"
+          [disabled]="loading"
+        />
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          [disabled]="loading"
+        />
+
+      </div>
+
+      <div
+        class="error-message"
+        *ngIf="errorMessage"
+      >
+        ⚠️ {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="login-button"
+        [disabled]="loading"
+      >
+
+        <span *ngIf="!loading">
+          🔐 Login
+        </span>
+
+        <span *ngIf="loading">
+          Logging in...
+        </span>
+
+      </button>
+
+    </form>
+
+    <div class="login-footer">
+
+      <span>Hostel Management System</span>
+
+    </div>
+
+  </div>
+
+</div>

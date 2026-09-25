@@ -1,0 +1,270 @@
+<div class="page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Complaints</h1>
+      <p>Manage and track student complaints</p>
+    </div>
+
+    <!-- ADMIN + USER can create complaints -->
+    <button
+      type="button"
+      class="add-button"
+      (click)="addComplaint()">
+      + Add Complaint
+    </button>
+
+  </div>
+
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+      <div class="summary-icon">📋</div>
+      <div>
+        <p>Total Complaints</p>
+        <h2>{{ totalComplaints }}</h2>
+      </div>
+    </div>
+
+
+    <div class="summary-card">
+      <div class="summary-icon">🔵</div>
+      <div>
+        <p>Open</p>
+        <h2>{{ openComplaints }}</h2>
+      </div>
+    </div>
+
+
+    <div class="summary-card">
+      <div class="summary-icon">⏳</div>
+      <div>
+        <p>In Progress</p>
+        <h2>{{ inProgressComplaints }}</h2>
+      </div>
+    </div>
+
+
+    <div class="summary-card">
+      <div class="summary-icon">✅</div>
+      <div>
+        <p>Resolved</p>
+        <h2>{{ resolvedComplaints }}</h2>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div
+    *ngIf="errorMessage"
+    class="alert error">
+    {{ errorMessage }}
+  </div>
+
+
+  <div
+    *ngIf="loading"
+    class="loading">
+    Loading complaints...
+  </div>
+
+
+  <div
+    *ngIf="!loading && complaints.length > 0"
+    class="table-card">
+
+    <div class="table-header">
+      <h2>Complaint Records</h2>
+      <span>{{ complaints.length }} record(s)</span>
+    </div>
+
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>ID</th>
+            <th>Student</th>
+            <th>Subject</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Resolution</th>
+            <th>Resolved Date</th>
+            <th>Actions</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let complaint of complaints">
+
+            <td>
+              #{{ complaint.id }}
+            </td>
+
+
+            <td>
+              <strong>
+                {{ getStudentName(complaint) }}
+              </strong>
+            </td>
+
+
+            <td>
+              <strong>
+                {{ complaint.subject }}
+              </strong>
+            </td>
+
+
+            <td>
+              <div class="description">
+                {{ complaint.description }}
+              </div>
+            </td>
+
+
+            <td>
+              {{ formatDate(complaint.complaintDate) }}
+            </td>
+
+
+            <td>
+
+              <span
+                class="badge priority"
+                [ngClass]="
+                  getPriorityClass(
+                    complaint.priority
+                  )
+                ">
+
+                {{ complaint.priority }}
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <span
+                class="badge status"
+                [ngClass]="
+                  getStatusClass(
+                    complaint.status
+                  )
+                ">
+
+                {{ formatStatus(complaint.status) }}
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div
+                class="resolution"
+                *ngIf="complaint.resolution">
+
+                {{ complaint.resolution }}
+
+              </div>
+
+              <span
+                class="muted"
+                *ngIf="!complaint.resolution">
+
+                -
+
+              </span>
+
+            </td>
+
+
+            <td>
+              {{ formatDate(complaint.resolvedDate) }}
+            </td>
+
+
+            <td>
+
+              <div class="actions">
+
+                <!-- ADMIN ONLY -->
+                @if (isAdmin) {
+
+                  <button
+                    type="button"
+                    class="edit-button"
+                    (click)="
+                      editComplaint(complaint.id)
+                    ">
+                    Edit
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="delete-button"
+                    (click)="
+                      deleteComplaint(complaint.id)
+                    ">
+                    Delete
+                  </button>
+
+                }
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <div
+    *ngIf="!loading && complaints.length === 0"
+    class="empty-state">
+
+    <div class="empty-icon">
+      📋
+    </div>
+
+    <h2>No complaints found</h2>
+
+    <p>
+      There are currently no complaint records.
+    </p>
+
+    <!-- ADMIN + USER can create complaints -->
+    <button
+      type="button"
+      class="add-button"
+      (click)="addComplaint()">
+      + Add First Complaint
+    </button>
+
+  </div>
+
+</div>

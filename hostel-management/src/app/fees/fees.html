@@ -1,0 +1,397 @@
+<div class="page-container">
+
+  <!-- =========================
+       PAGE HEADER
+  ========================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <h1>
+        Fees
+      </h1>
+
+      <p>
+        Manage student fee records and payment details.
+      </p>
+
+    </div>
+
+
+    @if (isAdmin) {
+
+      <button
+        type="button"
+        class="add-button"
+        (click)="addFee()">
+
+        + Add Fee
+
+      </button>
+
+    }
+
+  </div>
+
+
+  <!-- =========================
+       SUMMARY CARDS
+  ========================== -->
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <div class="summary-label">
+        Total Fees
+      </div>
+
+      <div class="summary-value">
+        ₹{{ formatAmount(totalFees) }}
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-label">
+        Total Paid
+      </div>
+
+      <div class="summary-value">
+        ₹{{ formatAmount(totalPaid) }}
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-label">
+        Pending Amount
+      </div>
+
+      <div class="summary-value">
+        ₹{{ formatAmount(totalPending) }}
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-label">
+        Fee Records
+      </div>
+
+      <div class="summary-value">
+        {{ fees.length }}
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       ERROR MESSAGE
+  ========================== -->
+
+  <div
+    class="error-message"
+    *ngIf="errorMessage">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- =========================
+       LOADING
+  ========================== -->
+
+  <div
+    class="loading-message"
+    *ngIf="loading">
+
+    Loading fees...
+
+  </div>
+
+
+  <!-- =========================
+       FEE RECORDS
+  ========================== -->
+
+  <div
+    class="table-card"
+    *ngIf="!loading">
+
+
+    <!-- TABLE HEADER -->
+
+    <div class="table-header">
+
+      <div>
+
+        <h2>
+          Fee Records
+        </h2>
+
+        <p>
+          View and manage all student fee payments.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         EMPTY STATE
+    ========================== -->
+
+    <div
+      class="empty-state"
+      *ngIf="fees.length === 0 && !errorMessage">
+
+      <h3>
+        No fee records found
+      </h3>
+
+      <p>
+        Add a fee record to get started.
+      </p>
+
+
+      @if (isAdmin) {
+
+        <button
+          type="button"
+          class="add-button"
+          (click)="addFee()">
+
+          + Add Fee
+
+        </button>
+
+      }
+
+    </div>
+
+
+    <!-- =========================
+         FEE TABLE
+    ========================== -->
+
+    <div
+      class="table-wrapper"
+      *ngIf="fees.length > 0">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              ID
+            </th>
+
+            <th>
+              Student
+            </th>
+
+            <th>
+              Fee Type
+            </th>
+
+            <th>
+              Amount
+            </th>
+
+            <th>
+              Paid
+            </th>
+
+            <th>
+              Balance
+            </th>
+
+            <th>
+              Due Date
+            </th>
+
+            <th>
+              Paid Date
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Remarks
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let fee of fees">
+
+
+            <!-- ID -->
+
+            <td>
+
+              {{ fee.id }}
+
+            </td>
+
+
+            <!-- STUDENT -->
+
+            <td>
+
+              <strong class="fee-student-name">
+
+                {{ getStudentName(fee.studentId) }}
+
+              </strong>
+
+            </td>
+
+
+            <!-- FEE TYPE -->
+
+            <td>
+
+              {{ fee.feeType }}
+
+            </td>
+
+
+            <!-- AMOUNT -->
+
+            <td>
+
+              ₹{{ formatAmount(fee.amount) }}
+
+            </td>
+
+
+            <!-- PAID -->
+
+            <td>
+
+              ₹{{ formatAmount(fee.paidAmount) }}
+
+            </td>
+
+
+            <!-- BALANCE -->
+
+            <td>
+
+              ₹{{ formatAmount(getBalance(fee)) }}
+
+            </td>
+
+
+            <!-- DUE DATE -->
+
+            <td>
+
+              {{ formatDate(fee.dueDate) }}
+
+            </td>
+
+
+            <!-- PAID DATE -->
+
+            <td>
+
+              {{ formatDate(fee.paidDate) }}
+
+            </td>
+
+
+            <!-- STATUS -->
+
+            <td>
+
+              <span
+                class="status-badge"
+                [ngClass]="getStatusClass(fee.status)">
+
+                {{ fee.status }}
+
+              </span>
+
+            </td>
+
+
+            <!-- REMARKS -->
+
+            <td>
+
+              {{ fee.remarks || '-' }}
+
+            </td>
+
+
+            <!-- ACTIONS -->
+
+            <td>
+
+              <div class="action-buttons">
+
+                @if (isAdmin) {
+
+                  <button
+                    type="button"
+                    class="edit-button"
+                    (click)="editFee(fee.id)">
+
+                    Edit
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="delete-button"
+                    (click)="deleteFee(fee.id)">
+
+                    Delete
+
+                  </button>
+
+                }
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

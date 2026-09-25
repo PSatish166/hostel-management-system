@@ -1,0 +1,208 @@
+<div class="edit-allocation-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Edit Allocation</h1>
+      <p>Update student room and bed allocation details.</p>
+    </div>
+
+    <a
+      routerLink="/allocation"
+      class="back-btn"
+    >
+      ← Back to Allocations
+    </a>
+
+  </div>
+
+
+  <!-- Loading -->
+  @if (loading) {
+
+    <div class="message-card">
+      <p>Loading allocation details...</p>
+    </div>
+
+  }
+
+
+  <!-- Error -->
+  @if (errorMessage) {
+
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+
+  }
+
+
+  <!-- Success -->
+  @if (successMessage) {
+
+    <div class="success-message">
+      {{ successMessage }}
+    </div>
+
+  }
+
+
+  <!-- Edit Form -->
+  @if (!loading && !errorMessage) {
+
+    <div class="form-card">
+
+      <div class="form-header">
+
+        <h2>Allocation Details</h2>
+
+        <p>
+          Edit the allocation information below.
+        </p>
+
+      </div>
+
+
+      <form
+        (ngSubmit)="updateAllocation()"
+      >
+
+        <!-- Student ID -->
+        <div class="form-group">
+
+          <label for="studentId">
+            Student ID
+          </label>
+
+          <input
+            id="studentId"
+            type="number"
+            name="studentId"
+            [(ngModel)]="allocation.studentId"
+            placeholder="Enter student ID"
+            required
+          >
+
+        </div>
+
+
+        <!-- Room ID -->
+        <div class="form-group">
+
+          <label for="roomId">
+            Room ID
+          </label>
+
+          <input
+            id="roomId"
+            type="number"
+            name="roomId"
+            [(ngModel)]="allocation.roomId"
+            placeholder="Enter room ID"
+            required
+          >
+
+        </div>
+
+
+        <!-- Bed Number -->
+        <div class="form-group">
+
+          <label for="bedNumber">
+            Bed Number
+          </label>
+
+          <input
+            id="bedNumber"
+            type="text"
+            name="bedNumber"
+            [(ngModel)]="allocation.bedNumber"
+            placeholder="Example: BED-1"
+            required
+          >
+
+        </div>
+
+
+        <!-- Allocation Date -->
+        <div class="form-group">
+
+          <label for="allocationDate">
+            Allocation Date
+          </label>
+
+          <input
+            id="allocationDate"
+            type="date"
+            name="allocationDate"
+            [(ngModel)]="allocation.allocationDate"
+            required
+          >
+
+        </div>
+
+
+        <!-- Status -->
+        <div class="form-group">
+
+          <label for="status">
+            Status
+          </label>
+
+          <select
+            id="status"
+            name="status"
+            [(ngModel)]="allocation.status"
+            required
+          >
+
+            <option value="ACTIVE">
+              ACTIVE
+            </option>
+
+            <option value="VACATED">
+              VACATED
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Buttons -->
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="cancel()"
+            [disabled]="saving"
+          >
+            Cancel
+          </button>
+
+
+          <button
+            type="submit"
+            class="save-btn"
+            [disabled]="saving"
+          >
+
+            @if (saving) {
+              Updating...
+            } @else {
+              Update Allocation
+            }
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  }
+
+</div>

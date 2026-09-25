@@ -1,0 +1,131 @@
+/* =========================================
+   GLOBAL APPLICATION STYLES
+========================================= */
+
+/* Global Reset */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+/* Global Font */
+
+html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #111827;
+  background: #f5f7fb;
+}
+
+/* Apply the same font throughout the application */
+
+* {
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+/* Form Elements */
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* Links */
+
+a {
+  font-family: inherit;
+}
+
+/* Headings */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: inherit;
+}
+
+/* Paragraphs */
+
+p {
+  font-family: inherit;
+}
+
+/* Tables */
+
+table,
+thead,
+tbody,
+tr,
+th,
+td {
+  font-family: inherit;
+}
+
+/* Form Controls */
+
+input,
+select,
+textarea,
+button {
+  font-size: inherit;
+}
+
+/* Remove default button appearance differences */
+
+button {
+  font-family: inherit;
+}
+
+/* Global box sizing */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   GLOBAL COMPACT MODE
+========================================= */
+
+body.compact-mode {
+  --compact-spacing: 10px;
+}
+
+body.compact-mode .page-content {
+  padding-top: var(--compact-spacing);
+  padding-bottom: var(--compact-spacing);
+}
+
+body.compact-mode .card,
+body.compact-mode .dashboard-card,
+body.compact-mode .summary-card {
+  padding: var(--compact-spacing);
+}
+
+body.compact-mode table th,
+body.compact-mode table td {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+body.compact-mode .settings-card {
+  padding: 16px;
+}
+
+body.compact-mode .settings-page {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}

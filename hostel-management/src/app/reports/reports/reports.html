@@ -1,0 +1,231 @@
+<div class="reports-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>Reports</h1>
+      <p>Overview of hostel management activities and records</p>
+    </div>
+
+    <button class="refresh-btn" (click)="refreshReports()">
+      🔄 Refresh
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-box" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading report data...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-box" *ngIf="!loading && errorMessage">
+    <span>⚠️</span>
+    <div>
+      <strong>Unable to load reports</strong>
+      <p>{{ errorMessage }}</p>
+    </div>
+  </div>
+
+  <!-- Reports Content -->
+  <div *ngIf="!loading && !errorMessage">
+
+    <!-- Summary Cards -->
+    <div class="summary-grid">
+
+      <div class="summary-card students-card">
+        <div class="card-icon">👨‍🎓</div>
+        <div class="card-content">
+          <p>Total Students</p>
+          <h2>{{ totalStudents }}</h2>
+        </div>
+      </div>
+
+      <div class="summary-card rooms-card">
+        <div class="card-icon">🏢</div>
+        <div class="card-content">
+          <p>Total Rooms</p>
+          <h2>{{ totalRooms }}</h2>
+        </div>
+      </div>
+
+      <div class="summary-card allocation-card">
+        <div class="card-icon">🛏️</div>
+        <div class="card-content">
+          <p>Total Allocations</p>
+          <h2>{{ totalAllocations }}</h2>
+        </div>
+      </div>
+
+      <div class="summary-card fees-card">
+        <div class="card-icon">💰</div>
+        <div class="card-content">
+          <p>Fee Records</p>
+          <h2>{{ totalFees }}</h2>
+        </div>
+      </div>
+
+      <div class="summary-card complaints-card">
+        <div class="card-icon">📢</div>
+        <div class="card-content">
+          <p>Complaints</p>
+          <h2>{{ totalComplaints }}</h2>
+        </div>
+      </div>
+
+      <div class="summary-card attendance-card">
+        <div class="card-icon">📋</div>
+        <div class="card-content">
+          <p>Attendance Records</p>
+          <h2>{{ totalAttendance }}</h2>
+        </div>
+      </div>
+
+      <div class="summary-card visitors-card">
+        <div class="card-icon">👥</div>
+        <div class="card-content">
+          <p>Total Visitors</p>
+          <h2>{{ totalVisitors }}</h2>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Visitor Report -->
+    <div class="report-section">
+      <div class="section-header">
+        <div>
+          <h2>Visitor Report</h2>
+          <p>Current visitor activity</p>
+        </div>
+      </div>
+
+      <div class="visitor-stats">
+
+        <div class="visitor-stat">
+          <span class="stat-icon">🟢</span>
+          <div>
+            <span>Checked In</span>
+            <strong>{{ checkedInVisitors }}</strong>
+          </div>
+        </div>
+
+        <div class="visitor-stat">
+          <span class="stat-icon">🔵</span>
+          <div>
+            <span>Checked Out</span>
+            <strong>{{ checkedOutVisitors }}</strong>
+          </div>
+        </div>
+
+        <div class="visitor-stat">
+          <span class="stat-icon">🔴</span>
+          <div>
+            <span>Cancelled</span>
+            <strong>{{ cancelledVisitors }}</strong>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Module Overview -->
+    <div class="report-section">
+      <div class="section-header">
+        <div>
+          <h2>Module Overview</h2>
+          <p>Records available across the hostel management system</p>
+        </div>
+      </div>
+
+      <div class="module-table">
+
+        <div class="table-row table-header">
+          <div>Module</div>
+          <div>Total Records</div>
+          <div>Status</div>
+        </div>
+
+        <div class="table-row">
+          <div class="module-name">
+            <span>👨‍🎓</span>
+            Students
+          </div>
+          <div>{{ totalStudents }}</div>
+          <div>
+            <span class="status-badge active">Available</span>
+          </div>
+        </div>
+
+        <div class="table-row">
+          <div class="module-name">
+            <span>🏢</span>
+            Rooms
+          </div>
+          <div>{{ totalRooms }}</div>
+          <div>
+            <span class="status-badge active">Available</span>
+          </div>
+        </div>
+
+        <div class="table-row">
+          <div class="module-name">
+            <span>🛏️</span>
+            Allocations
+          </div>
+          <div>{{ totalAllocations }}</div>
+          <div>
+            <span class="status-badge active">Available</span>
+          </div>
+        </div>
+
+        <div class="table-row">
+          <div class="module-name">
+            <span>💰</span>
+            Fees
+          </div>
+          <div>{{ totalFees }}</div>
+          <div>
+            <span class="status-badge active">Available</span>
+          </div>
+        </div>
+
+        <div class="table-row">
+          <div class="module-name">
+            <span>📢</span>
+            Complaints
+          </div>
+          <div>{{ totalComplaints }}</div>
+          <div>
+            <span class="status-badge active">Available</span>
+          </div>
+        </div>
+
+        <div class="table-row">
+          <div class="module-name">
+            <span>📋</span>
+            Attendance
+          </div>
+          <div>{{ totalAttendance }}</div>
+          <div>
+            <span class="status-badge active">Available</span>
+          </div>
+        </div>
+
+        <div class="table-row">
+          <div class="module-name">
+            <span>👥</span>
+            Visitors
+          </div>
+          <div>{{ totalVisitors }}</div>
+          <div>
+            <span class="status-badge active">Available</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,773 @@
+<div class="dashboard">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+
+      <h1>
+        Dashboard
+      </h1>
+
+      <p>
+        Welcome back, Admin! Here's what's happening in your hostel.
+      </p>
+
+    </div>
+
+
+    @if (isAdmin) {
+
+      <button
+        type="button"
+        class="add-btn"
+        (click)="addStudent()">
+
+        + Add Student
+
+      </button>
+
+    }
+
+  </div>
+
+
+  <!-- Statistics Cards -->
+  <div class="stats-grid">
+
+
+    <!-- Total Students -->
+    <div class="stat-card">
+
+      <div class="stat-icon blue">
+        👨‍🎓
+      </div>
+
+      <div>
+
+        <p>
+          Total Students
+        </p>
+
+        <h2>
+          {{ totalStudents }}
+        </h2>
+
+        <span class="positive">
+          Currently registered
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- Available Rooms -->
+    <div class="stat-card">
+
+      <div class="stat-icon green">
+        🏢
+      </div>
+
+      <div>
+
+        <p>
+          Available Rooms
+        </p>
+
+        <h2>
+          {{ availableRooms }}
+        </h2>
+
+        <span class="positive">
+          Rooms with available beds
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- Occupied Beds -->
+    <div class="stat-card">
+
+      <div class="stat-icon purple">
+        🛏️
+      </div>
+
+      <div>
+
+        <p>
+          Occupied Beds
+        </p>
+
+        <h2>
+          {{ occupiedBeds }}
+        </h2>
+
+        <span class="neutral">
+          {{ occupancyPercentage }}% occupancy
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- Pending Fees -->
+    <div class="stat-card">
+
+      <div class="stat-icon orange">
+        💰
+      </div>
+
+      <div>
+
+        <p>
+          Pending Fees
+        </p>
+
+        <h2>
+          ₹{{ pendingFees | number:'1.2-2' }}
+        </h2>
+
+        <span
+          class="neutral"
+          *ngIf="pendingFees > 0">
+
+          Outstanding fee amount
+
+        </span>
+
+        <span
+          class="positive"
+          *ngIf="pendingFees === 0">
+
+          No pending fees
+
+        </span>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+  <!-- Main Dashboard Grid -->
+  <div class="dashboard-grid">
+
+
+    <!-- Recent Students -->
+    <div class="dashboard-card students-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <h3>
+            Recent Students
+          </h3>
+
+          <p>
+            Recently registered students
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="view-btn"
+          (click)="viewStudents()">
+
+          View All
+
+        </button>
+
+      </div>
+
+
+      <div class="table-container">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Student
+              </th>
+
+              <th>
+                Room
+              </th>
+
+              <th>
+                Course
+              </th>
+
+              <th>
+                Status
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @if (recentStudents.length === 0) {
+
+              <tr>
+
+                <td
+                  colspan="4"
+                  style="text-align: center;">
+
+                  No students found.
+
+                </td>
+
+              </tr>
+
+            }
+
+            @else {
+
+              @for (
+                student of recentStudents;
+                track student.id
+              ) {
+
+                <tr>
+
+
+                  <!-- Student -->
+                  <td>
+
+                    <div class="student-info">
+
+                      <div class="student-avatar">
+
+                        {{
+                          (
+                            (student.firstName ?? '') +
+                            ' ' +
+                            (student.lastName ?? '')
+                          )
+                            .trim()
+                            .charAt(0)
+                            .toUpperCase() || '?'
+                        }}
+
+                      </div>
+
+
+                      <div>
+
+                        <strong>
+
+                          {{
+                            (
+                              (student.firstName ?? '') +
+                              ' ' +
+                              (student.lastName ?? '')
+                            ).trim()
+                            || 'Unknown Student'
+                          }}
+
+                        </strong>
+
+
+                        <span>
+
+                          {{
+                            student.studentId ??
+                            'N/A'
+                          }}
+
+                        </span>
+
+                      </div>
+
+                    </div>
+
+                  </td>
+
+
+                  <!-- Room -->
+                  <td>
+
+                    <div class="room-info">
+
+                      <strong>
+                        {{ getRoomNumber(student.id) }}
+                      </strong>
+
+                      @if (getBedNumber(student.id)) {
+
+                        <span>
+                          {{ getBedNumber(student.id) }}
+                        </span>
+
+                      }
+
+                    </div>
+
+                  </td>
+
+
+                  <!-- Course -->
+                  <td>
+
+                    {{
+                      student.course ||
+                      'N/A'
+                    }}
+
+                  </td>
+
+
+                  <!-- Status -->
+                  <td>
+
+                    @if (
+                      getStudentAllocation(student.id)
+                    ) {
+
+                      <span
+                        class="status active-status">
+
+                        Active
+
+                      </span>
+
+                    }
+
+                    @else {
+
+                      <span
+                        class="status pending-status">
+
+                        Not Allocated
+
+                      </span>
+
+                    }
+
+                  </td>
+
+
+                </tr>
+
+              }
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- Room Occupancy -->
+    <div class="dashboard-card occupancy-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <h3>
+            Room Occupancy
+          </h3>
+
+          <p>
+            Current room status
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="occupancy-content">
+
+
+        <!-- Occupancy Circle -->
+        <div
+          class="circle-progress"
+
+          [style.background]="
+            'conic-gradient(#2563eb 0deg ' +
+            (occupancyPercentage * 3.6) +
+            'deg, #e5e7eb ' +
+            (occupancyPercentage * 3.6) +
+            'deg 360deg)'
+          "
+        >
+
+          <div class="circle-inner">
+
+            <strong>
+              {{ occupancyPercentage }}%
+            </strong>
+
+            <span>
+              Occupied
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Occupancy Details -->
+        <div class="occupancy-details">
+
+
+          <!-- Occupied -->
+          <div class="occupancy-item">
+
+            <span>
+
+              <i class="dot occupied"></i>
+
+              Occupied
+
+            </span>
+
+            <strong>
+              {{ occupiedBeds }}
+            </strong>
+
+          </div>
+
+
+          <!-- Available -->
+          <div class="occupancy-item">
+
+            <span>
+
+              <i class="dot available"></i>
+
+              Available
+
+            </span>
+
+            <strong>
+
+              {{
+                totalBeds - occupiedBeds < 0
+                  ? 0
+                  : totalBeds - occupiedBeds
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <!-- Maintenance -->
+          <div class="occupancy-item">
+
+            <span>
+
+              <i class="dot maintenance"></i>
+
+              Maintenance
+
+            </span>
+
+            <strong>
+              {{ maintenanceRooms }}
+            </strong>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+  <!-- Bottom Section -->
+  <div class="bottom-grid">
+
+
+    <!-- Recent Complaints -->
+    <div class="dashboard-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <h3>
+            Recent Complaints
+          </h3>
+
+          <p>
+            Latest complaints from students
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="view-btn"
+          (click)="viewComplaints()">
+
+          View All
+
+        </button>
+
+      </div>
+
+
+      <div class="complaint-list">
+
+
+        <!-- Complaints -->
+        @if (complaints.length > 0) {
+
+          @for (
+            complaint of complaints.slice(0, 4);
+            track complaint.id
+          ) {
+
+            <div class="complaint-item">
+
+
+              <!-- Complaint Icon -->
+              <div class="complaint-icon">
+
+                @if (
+                  complaint.priority === 'URGENT'
+                ) {
+
+                  🚨
+
+                }
+
+                @else if (
+                  complaint.priority === 'HIGH'
+                ) {
+
+                  ⚠️
+
+                }
+
+                @else if (
+                  complaint.priority === 'MEDIUM'
+                ) {
+
+                  🔧
+
+                }
+
+                @else {
+
+                  📋
+
+                }
+
+              </div>
+
+
+              <!-- Complaint Information -->
+              <div class="complaint-content">
+
+                <strong>
+                  {{ complaint.subject }}
+                </strong>
+
+                <span>
+                  Student #{{ complaint.studentId }}
+                </span>
+
+                <small>
+                  {{ complaint.description }}
+                </small>
+
+              </div>
+
+
+              <!-- Complaint Status -->
+              <span
+                class="complaint-status"
+
+                [ngClass]="{
+
+                  'low':
+                    complaint.priority === 'LOW',
+
+                  'medium':
+                    complaint.priority === 'MEDIUM',
+
+                  'high':
+                    complaint.priority === 'HIGH',
+
+                  'urgent':
+                    complaint.priority === 'URGENT'
+
+                }">
+
+                {{ complaint.status }}
+
+              </span>
+
+
+            </div>
+
+          }
+
+        }
+
+
+        <!-- No Complaints -->
+        @else {
+
+          <div class="complaint-item">
+
+            <div class="complaint-icon">
+              📋
+            </div>
+
+            <div class="complaint-content">
+
+              <strong>
+                No complaints found
+              </strong>
+
+              <span>
+                There are currently no complaint records.
+              </span>
+
+            </div>
+
+            <span class="complaint-status low">
+              Info
+            </span>
+
+          </div>
+
+        }
+
+
+      </div>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+    <div class="dashboard-card">
+
+      <div class="card-header">
+
+        <div>
+
+          <h3>
+            Quick Actions
+          </h3>
+
+          <p>
+            Frequently used actions
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="quick-actions">
+
+        @if (isAdmin) {
+
+
+          <!-- Add Student -->
+          <button
+            type="button"
+            (click)="addStudent()">
+
+            <span>
+              👨‍🎓
+            </span>
+
+            <strong>
+              Add Student
+            </strong>
+
+          </button>
+
+
+          <!-- Add Room -->
+          <button
+            type="button"
+            (click)="addRoom()">
+
+            <span>
+              🏢
+            </span>
+
+            <strong>
+              Add Room
+            </strong>
+
+          </button>
+
+
+          <!-- Allocate Bed -->
+          <button
+            type="button"
+            (click)="addAllocation()">
+
+            <span>
+              🛏️
+            </span>
+
+            <strong>
+              Allocate Bed
+            </strong>
+
+          </button>
+
+
+          <!-- Record Payment -->
+          <button
+            type="button"
+            (click)="addAllocation()">
+
+            <span>
+              💰
+            </span>
+
+            <strong>
+              Record Payment
+            </strong>
+
+          </button>
+
+
+        }
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+</div>

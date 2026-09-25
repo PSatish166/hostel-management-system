@@ -1,0 +1,381 @@
+<div class="page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Edit Visitor</h1>
+      <p>Update visitor information</p>
+    </div>
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="cancel()">
+      ← Back to Visitors
+    </button>
+
+  </div>
+
+
+  <!-- Loading -->
+
+  <div
+    *ngIf="loading"
+    class="loading">
+
+    Loading visitor details...
+
+  </div>
+
+
+  <!-- Error -->
+
+  <div
+    *ngIf="errorMessage"
+    class="alert error">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- Success -->
+
+  <div
+    *ngIf="successMessage"
+    class="alert success">
+
+    {{ successMessage }}
+
+  </div>
+
+
+  <!-- Form -->
+
+  <div
+    *ngIf="!loading"
+    class="form-card">
+
+    <form
+      [formGroup]="visitorForm"
+      (ngSubmit)="updateVisitor()">
+
+
+      <!-- Visitor Information -->
+
+      <div class="section">
+
+        <h2>Visitor Information</h2>
+
+        <div class="form-grid">
+
+
+          <!-- Student -->
+
+          <div class="form-group">
+
+            <label for="studentId">
+              Visiting Student
+              <span>*</span>
+            </label>
+
+            <select
+              id="studentId"
+              formControlName="studentId">
+
+              <option value="">
+                Select Student
+              </option>
+
+              <option
+                *ngFor="let student of students"
+                [value]="student.id">
+
+                {{ getStudentName(student) }}
+
+              </option>
+
+            </select>
+
+            <small
+              class="field-error"
+              *ngIf="
+                visitorForm.get('studentId')?.touched &&
+                visitorForm.get('studentId')?.invalid
+              ">
+
+              Please select a student.
+
+            </small>
+
+          </div>
+
+
+          <!-- Visitor Name -->
+
+          <div class="form-group">
+
+            <label for="visitorName">
+              Visitor Name
+              <span>*</span>
+            </label>
+
+            <input
+              id="visitorName"
+              type="text"
+              formControlName="visitorName"
+              placeholder="Enter visitor name">
+
+            <small
+              class="field-error"
+              *ngIf="
+                visitorForm.get('visitorName')?.touched &&
+                visitorForm.get('visitorName')?.invalid
+              ">
+
+              Visitor name is required.
+
+            </small>
+
+          </div>
+
+
+          <!-- Phone -->
+
+          <div class="form-group">
+
+            <label for="phone">
+              Phone Number
+              <span>*</span>
+            </label>
+
+            <input
+              id="phone"
+              type="tel"
+              formControlName="phone"
+              maxlength="10"
+              placeholder="Enter 10-digit phone number">
+
+            <small
+              class="field-error"
+              *ngIf="
+                visitorForm.get('phone')?.touched &&
+                visitorForm.get('phone')?.invalid
+              ">
+
+              Enter a valid 10-digit phone number.
+
+            </small>
+
+          </div>
+
+
+          <!-- Relation -->
+
+          <div class="form-group">
+
+            <label for="relation">
+              Relation
+            </label>
+
+            <input
+              id="relation"
+              type="text"
+              formControlName="relation"
+              placeholder="e.g. Father, Mother, Friend">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Visit Details -->
+
+      <div class="section">
+
+        <h2>Visit Details</h2>
+
+        <div class="form-grid">
+
+
+          <!-- Visit Date -->
+
+          <div class="form-group">
+
+            <label for="visitDate">
+              Visit Date
+              <span>*</span>
+            </label>
+
+            <input
+              id="visitDate"
+              type="date"
+              formControlName="visitDate">
+
+            <small
+              class="field-error"
+              *ngIf="
+                visitorForm.get('visitDate')?.touched &&
+                visitorForm.get('visitDate')?.invalid
+              ">
+
+              Visit date is required.
+
+            </small>
+
+          </div>
+
+
+          <!-- Check In -->
+
+          <div class="form-group">
+
+            <label for="checkInTime">
+              Check In Time
+            </label>
+
+            <input
+              id="checkInTime"
+              type="time"
+              formControlName="checkInTime">
+
+          </div>
+
+
+          <!-- Check Out -->
+
+          <div class="form-group">
+
+            <label for="checkOutTime">
+              Check Out Time
+            </label>
+
+            <input
+              id="checkOutTime"
+              type="time"
+              formControlName="checkOutTime">
+
+          </div>
+
+
+          <!-- Status -->
+
+          <div class="form-group">
+
+            <label for="status">
+              Status
+              <span>*</span>
+            </label>
+
+            <select
+              id="status"
+              formControlName="status">
+
+              <option value="CHECKED_IN">
+                Checked In
+              </option>
+
+              <option value="CHECKED_OUT">
+                Checked Out
+              </option>
+
+              <option value="CANCELLED">
+                Cancelled
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- Purpose -->
+
+          <div class="form-group full-width">
+
+            <label for="purpose">
+              Purpose of Visit
+              <span>*</span>
+            </label>
+
+            <input
+              id="purpose"
+              type="text"
+              formControlName="purpose"
+              placeholder="Enter purpose of visit">
+
+            <small
+              class="field-error"
+              *ngIf="
+                visitorForm.get('purpose')?.touched &&
+                visitorForm.get('purpose')?.invalid
+              ">
+
+              Purpose of visit is required.
+
+            </small>
+
+          </div>
+
+
+          <!-- Remarks -->
+
+          <div class="form-group full-width">
+
+            <label for="remarks">
+              Remarks
+            </label>
+
+            <textarea
+              id="remarks"
+              rows="4"
+              formControlName="remarks"
+              maxlength="500"
+              placeholder="Enter any additional remarks">
+            </textarea>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Actions -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="cancel()">
+
+          Cancel
+
+        </button>
+
+
+        <button
+          type="submit"
+          class="save-button"
+          [disabled]="saving || loadingStudents">
+
+          <span *ngIf="!saving">
+            Update Visitor
+          </span>
+
+          <span *ngIf="saving">
+            Updating...
+          </span>
+
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+
+</div>

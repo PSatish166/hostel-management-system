@@ -1,0 +1,406 @@
+<div class="students-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+
+      <h1>Students</h1>
+
+      <p>
+        Manage hostel students and their information.
+      </p>
+
+    </div>
+
+    @if (isAdmin) {
+
+      <button
+        class="add-btn"
+        routerLink="/students/add"
+      >
+        + Add Student
+      </button>
+
+    }
+
+  </div>
+
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+
+    <!-- Total Students -->
+    <div class="summary-card">
+
+      <div class="summary-icon blue">
+        👨‍🎓
+      </div>
+
+      <div>
+
+        <span>Total Students</span>
+
+        <strong>
+          {{ students.length }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- Active Students -->
+    <div class="summary-card">
+
+      <div class="summary-icon green">
+        ✓
+      </div>
+
+      <div>
+
+        <span>Active Students</span>
+
+        <strong>
+          {{ students.length }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- Pending Students -->
+    <div class="summary-card">
+
+      <div class="summary-icon orange">
+        ⏳
+      </div>
+
+      <div>
+
+        <span>Pending</span>
+
+        <strong>
+          {{ getPendingStudentsCount() }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- Allocated Students -->
+    <div class="summary-card">
+
+      <div class="summary-icon purple">
+        🏢
+      </div>
+
+      <div>
+
+        <span>Allocated Students</span>
+
+        <strong>
+          {{ getAllocatedStudentsCount() }}
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Students Card -->
+  <div class="students-card">
+
+    <!-- Toolbar -->
+    <div class="card-toolbar">
+
+      <div>
+
+        <h3>All Students</h3>
+
+        <p>
+          List of registered hostel students
+        </p>
+
+      </div>
+
+      <div class="toolbar-actions">
+
+        <div class="search-box">
+
+          <span>🔍</span>
+
+          <input
+            type="text"
+            placeholder="Search students..."
+            (input)="searchStudents($any($event.target).value)"
+          >
+
+        </div>
+
+        <button
+          type="button"
+          class="filter-btn"
+        >
+          ⚙ Filter
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- Students Table -->
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Student</th>
+
+            <th>Student ID</th>
+
+            <th>Course</th>
+
+            <th>Phone</th>
+
+            <th>Room / Bed</th>
+
+            <th>Status</th>
+
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <!-- Loading -->
+          @if (loading) {
+
+            <tr>
+
+              <td
+                colspan="7"
+                class="message-cell"
+              >
+                Loading students...
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- No Students -->
+          @else if (filteredStudents.length === 0) {
+
+            <tr>
+
+              <td
+                colspan="7"
+                class="message-cell"
+              >
+                No students found.
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- Students -->
+          @else {
+
+            @for (
+              student of filteredStudents;
+              track student.id
+            ) {
+
+              <tr>
+
+                <!-- Student -->
+                <td>
+
+                  <div class="student-info">
+
+                    <div class="student-avatar">
+
+                      {{ student.firstName?.[0] || '' }}{{ student.lastName?.[0] || '' }}
+
+                    </div>
+
+                    <div>
+
+                      <strong>
+
+                        {{ student.firstName }}
+                        {{ student.lastName }}
+
+                      </strong>
+
+                      <span>
+                        {{ student.email }}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <!-- Student ID -->
+                <td>
+                  {{ student.studentId }}
+                </td>
+
+
+                <!-- Course -->
+                <td>
+                  {{ student.course }}
+                </td>
+
+
+                <!-- Phone -->
+                <td>
+                  {{ student.phone }}
+                </td>
+
+
+                <!-- Room / Bed -->
+                <td>
+
+                  @if (
+                    getStudentAllocation(student.id);
+                    as allocation
+                  ) {
+
+                    <div class="room-info">
+
+                      <strong>
+                        {{ getRoomNumber(student.id) }}
+                      </strong>
+
+                      @if (allocation.bedNumber) {
+
+                        <span>
+                          {{ allocation.bedNumber }}
+                        </span>
+
+                      }
+
+                    </div>
+
+                  } @else {
+
+                    <span class="not-allocated">
+                      Not allocated
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- Status -->
+                <td>
+
+                  @if (
+                    getStudentAllocation(student.id)
+                  ) {
+
+                    <span class="status active">
+                      Active
+                    </span>
+
+                  } @else {
+
+                    <span class="status pending">
+                      Pending
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- Actions -->
+                <td>
+
+                  <div class="action-buttons">
+
+                    <!-- View -->
+                    <button
+                      type="button"
+                      title="View"
+                    >
+                      👁
+                    </button>
+
+
+                    <!-- ADMIN ONLY: Edit -->
+                    @if (isAdmin) {
+
+                      <button
+                        type="button"
+                        title="Edit"
+                        (click)="editStudent(student.id)"
+                      >
+                        ✏
+                      </button>
+
+                    }
+
+
+                    <!-- ADMIN ONLY: Delete -->
+                    @if (isAdmin) {
+
+                      <button
+                        type="button"
+                        title="Delete"
+                        (click)="deleteStudent(student.id)"
+                      >
+                        🗑
+                      </button>
+
+                    }
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- Pagination -->
+    <div class="pagination">
+
+      <span>
+        Showing {{ filteredStudents.length }} student(s)
+      </span>
+
+    </div>
+
+  </div>
+
+</div>

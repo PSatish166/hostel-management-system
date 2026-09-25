@@ -1,0 +1,604 @@
+<div class="add-student-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Add Student</h1>
+      <p>Register a new student in the hostel management system.</p>
+    </div>
+
+    <button
+      type="button"
+      class="back-btn"
+      routerLink="/students"
+    >
+      ← Back to Students
+    </button>
+
+  </div>
+
+
+  <!-- Student Form Card -->
+  <div class="student-form-card">
+
+    <!-- Form Header -->
+    <div class="form-header">
+
+      <div>
+        <h2>Student Information</h2>
+        <p>Enter the student's details below.</p>
+      </div>
+
+    </div>
+
+
+    <form [formGroup]="studentForm">
+
+
+      <!-- ==================== PERSONAL INFORMATION ==================== -->
+
+      <div class="form-section">
+
+        <div class="section-title">
+          <h3>Personal Information</h3>
+        </div>
+
+
+        <div class="form-row">
+
+          <!-- First Name -->
+          <div class="form-group">
+
+            <label for="firstName">
+              First Name <span>*</span>
+            </label>
+
+            <input
+              id="firstName"
+              type="text"
+              formControlName="firstName"
+              placeholder="Enter first name"
+            >
+
+            @if (
+              studentForm.get('firstName')?.touched &&
+              studentForm.get('firstName')?.invalid
+            ) {
+              <small class="error-message">
+                First name is required.
+              </small>
+            }
+
+          </div>
+
+
+          <!-- Last Name -->
+          <div class="form-group">
+
+            <label for="lastName">
+              Last Name <span>*</span>
+            </label>
+
+            <input
+              id="lastName"
+              type="text"
+              formControlName="lastName"
+              placeholder="Enter last name"
+            >
+
+            @if (
+              studentForm.get('lastName')?.touched &&
+              studentForm.get('lastName')?.invalid
+            ) {
+              <small class="error-message">
+                Last name is required.
+              </small>
+            }
+
+          </div>
+
+        </div>
+
+
+        <div class="form-row">
+
+          <!-- Date of Birth -->
+          <div class="form-group">
+
+            <label for="dateOfBirth">
+              Date of Birth <span>*</span>
+            </label>
+
+            <input
+              id="dateOfBirth"
+              type="date"
+              formControlName="dateOfBirth"
+            >
+
+            @if (
+              studentForm.get('dateOfBirth')?.touched &&
+              studentForm.get('dateOfBirth')?.invalid
+            ) {
+              <small class="error-message">
+                Date of birth is required.
+              </small>
+            }
+
+          </div>
+
+
+          <!-- Gender -->
+          <div class="form-group">
+
+            <label for="gender">
+              Gender <span>*</span>
+            </label>
+
+            <select
+              id="gender"
+              formControlName="gender"
+            >
+
+              <option value="">
+                Select gender
+              </option>
+
+              <option value="Male">
+                Male
+              </option>
+
+              <option value="Female">
+                Female
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+            @if (
+              studentForm.get('gender')?.touched &&
+              studentForm.get('gender')?.invalid
+            ) {
+              <small class="error-message">
+                Please select a gender.
+              </small>
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================== CONTACT INFORMATION ==================== -->
+
+      <div class="form-section">
+
+        <div class="section-title">
+          <h3>Contact Information</h3>
+        </div>
+
+
+        <div class="form-row">
+
+          <!-- Email -->
+          <div class="form-group">
+
+            <label for="email">
+              Email <span>*</span>
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="Enter email address"
+            >
+
+            @if (
+              studentForm.get('email')?.touched &&
+              studentForm.get('email')?.invalid
+            ) {
+
+              @if (studentForm.get('email')?.errors?.['required']) {
+                <small class="error-message">
+                  Email is required.
+                </small>
+              }
+
+              @if (studentForm.get('email')?.errors?.['email']) {
+                <small class="error-message">
+                  Please enter a valid email address.
+                </small>
+              }
+
+            }
+
+          </div>
+
+
+          <!-- Phone -->
+          <div class="form-group">
+
+            <label for="phone">
+              Phone Number <span>*</span>
+            </label>
+
+            <input
+              id="phone"
+              type="tel"
+              maxlength="10"
+              formControlName="phone"
+              placeholder="Enter phone number"
+            >
+
+            @if (
+              studentForm.get('phone')?.touched &&
+              studentForm.get('phone')?.invalid
+            ) {
+              <small class="error-message">
+                Enter a valid 10-digit phone number.
+              </small>
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- Address -->
+        <div class="form-row">
+
+          <div class="form-group full-width">
+
+            <label for="address">
+              Address <span>*</span>
+            </label>
+
+            <textarea
+              id="address"
+              formControlName="address"
+              rows="3"
+              placeholder="Enter full address"
+            ></textarea>
+
+            @if (
+              studentForm.get('address')?.touched &&
+              studentForm.get('address')?.invalid
+            ) {
+              <small class="error-message">
+                Address is required.
+              </small>
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================== ACADEMIC INFORMATION ==================== -->
+
+      <div class="form-section">
+
+        <div class="section-title">
+          <h3>Academic Information</h3>
+        </div>
+
+
+        <div class="form-row">
+
+          <!-- Student ID -->
+          <div class="form-group">
+
+            <label for="studentId">
+              Student ID <span>*</span>
+            </label>
+
+            <input
+              id="studentId"
+              type="text"
+              formControlName="studentId"
+              placeholder="e.g. STU006"
+            >
+
+            @if (
+              studentForm.get('studentId')?.touched &&
+              studentForm.get('studentId')?.invalid
+            ) {
+              <small class="error-message">
+                Student ID is required.
+              </small>
+            }
+
+          </div>
+
+
+          <!-- Course -->
+          <div class="form-group">
+
+            <label for="course">
+              Course <span>*</span>
+            </label>
+
+            <select
+              id="course"
+              formControlName="course"
+            >
+
+              <option value="">
+                Select course
+              </option>
+
+              <option value="B.Tech">
+                B.Tech
+              </option>
+
+              <option value="B.E">
+                B.E
+              </option>
+
+              <option value="B.Sc">
+                B.Sc
+              </option>
+
+              <option value="B.Com">
+                B.Com
+              </option>
+
+              <option value="BBA">
+                BBA
+              </option>
+
+              <option value="MBA">
+                MBA
+              </option>
+
+              <option value="M.Tech">
+                M.Tech
+              </option>
+
+              <option value="MCA">
+                MCA
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+            @if (
+              studentForm.get('course')?.touched &&
+              studentForm.get('course')?.invalid
+            ) {
+              <small class="error-message">
+                Please select a course.
+              </small>
+            }
+
+          </div>
+
+        </div>
+
+
+        <div class="form-row">
+
+          <!-- Year -->
+          <div class="form-group">
+
+            <label for="year">
+              Year <span>*</span>
+            </label>
+
+            <select
+              id="year"
+              formControlName="year"
+            >
+
+              <option value="">
+                Select year
+              </option>
+
+              <option value="1st Year">
+                1st Year
+              </option>
+
+              <option value="2nd Year">
+                2nd Year
+              </option>
+
+              <option value="3rd Year">
+                3rd Year
+              </option>
+
+              <option value="4th Year">
+                4th Year
+              </option>
+
+            </select>
+
+            @if (
+              studentForm.get('year')?.touched &&
+              studentForm.get('year')?.invalid
+            ) {
+              <small class="error-message">
+                Please select a year.
+              </small>
+            }
+
+          </div>
+
+
+          <!-- Department -->
+          <div class="form-group">
+
+            <label for="department">
+              Department <span>*</span>
+            </label>
+
+            <input
+              id="department"
+              type="text"
+              formControlName="department"
+              placeholder="Enter department"
+            >
+
+            @if (
+              studentForm.get('department')?.touched &&
+              studentForm.get('department')?.invalid
+            ) {
+              <small class="error-message">
+                Department is required.
+              </small>
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================== GUARDIAN INFORMATION ==================== -->
+
+      <div class="form-section">
+
+        <div class="section-title">
+          <h3>Parent / Guardian Information</h3>
+        </div>
+
+
+        <div class="form-row">
+
+          <!-- Guardian Name -->
+          <div class="form-group">
+
+            <label for="guardianName">
+              Guardian Name <span>*</span>
+            </label>
+
+            <input
+              id="guardianName"
+              type="text"
+              formControlName="guardianName"
+              placeholder="Enter guardian name"
+            >
+
+            @if (
+              studentForm.get('guardianName')?.touched &&
+              studentForm.get('guardianName')?.invalid
+            ) {
+              <small class="error-message">
+                Guardian name is required.
+              </small>
+            }
+
+          </div>
+
+
+          <!-- Guardian Phone -->
+          <div class="form-group">
+
+            <label for="guardianPhone">
+              Guardian Phone <span>*</span>
+            </label>
+
+            <input
+              id="guardianPhone"
+              type="tel"
+              maxlength="10"
+              formControlName="guardianPhone"
+              placeholder="Enter guardian phone"
+            >
+
+            @if (
+              studentForm.get('guardianPhone')?.touched &&
+              studentForm.get('guardianPhone')?.invalid
+            ) {
+              <small class="error-message">
+                Enter a valid 10-digit guardian phone number.
+              </small>
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================== ADMISSION INFORMATION ==================== -->
+
+      <div class="form-section">
+
+        <div class="section-title">
+          <h3>Admission Information</h3>
+        </div>
+
+
+        <div class="form-row">
+
+          <!-- Admission Date -->
+          <div class="form-group">
+
+            <label for="admissionDate">
+              Admission Date <span>*</span>
+            </label>
+
+            <input
+              id="admissionDate"
+              type="date"
+              formControlName="admissionDate"
+            >
+
+            @if (
+              studentForm.get('admissionDate')?.touched &&
+              studentForm.get('admissionDate')?.invalid
+            ) {
+              <small class="error-message">
+                Admission date is required.
+              </small>
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================== FORM ACTIONS ==================== -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          routerLink="/students"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          type="button"
+          class="save-btn"
+          (click)="saveStudent()"
+        >
+          Save Student
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+
+</div>

@@ -1,0 +1,306 @@
+<div class="add-room-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Add Room</h1>
+      <p>Add a new hostel room to the system.</p>
+    </div>
+
+    <button
+      type="button"
+      class="back-btn"
+      routerLink="/rooms"
+    >
+      ← Back to Rooms
+    </button>
+
+  </div>
+
+  <!-- Room Form -->
+  <form
+    [formGroup]="roomForm"
+    (ngSubmit)="saveRoom()"
+    class="room-form"
+  >
+
+    <!-- Room Information -->
+    <div class="form-card">
+
+      <div class="form-card-header">
+        <h2>Room Information</h2>
+
+        <p>
+          Enter the basic details of the hostel room.
+        </p>
+      </div>
+
+      <div class="form-grid">
+
+        <!-- Room Number -->
+        <div class="form-group">
+
+          <label>
+            Room Number *
+          </label>
+
+          <input
+            type="text"
+            formControlName="roomNumber"
+            placeholder="e.g. 301-A"
+          />
+
+          @if (
+            roomForm.get('roomNumber')?.touched &&
+            roomForm.get('roomNumber')?.invalid
+          ) {
+            <small class="error">
+              Room number is required.
+            </small>
+          }
+
+        </div>
+
+        <!-- Floor -->
+        <div class="form-group">
+
+          <label>
+            Floor *
+          </label>
+
+          <select formControlName="floor">
+
+            <option value="">
+              Select Floor
+            </option>
+
+            <option value="Ground Floor">
+              Ground Floor
+            </option>
+
+            <option value="1st Floor">
+              1st Floor
+            </option>
+
+            <option value="2nd Floor">
+              2nd Floor
+            </option>
+
+            <option value="3rd Floor">
+              3rd Floor
+            </option>
+
+            <option value="4th Floor">
+              4th Floor
+            </option>
+
+            <option value="5th Floor">
+              5th Floor
+            </option>
+
+          </select>
+
+          @if (
+            roomForm.get('floor')?.touched &&
+            roomForm.get('floor')?.invalid
+          ) {
+            <small class="error">
+              Floor is required.
+            </small>
+          }
+
+        </div>
+
+        <!-- Room Type -->
+        <div class="form-group">
+
+          <label>
+            Room Type *
+          </label>
+
+          <select formControlName="roomType">
+
+            <option value="">
+              Select Room Type
+            </option>
+
+            <option value="Single">
+              Single
+            </option>
+
+            <option value="Double">
+              Double
+            </option>
+
+            <option value="Triple">
+              Triple
+            </option>
+
+            <option value="Four Bed">
+              Four Bed
+            </option>
+
+          </select>
+
+          @if (
+            roomForm.get('roomType')?.touched &&
+            roomForm.get('roomType')?.invalid
+          ) {
+            <small class="error">
+              Room type is required.
+            </small>
+          }
+
+        </div>
+
+        <!-- Capacity -->
+        <div class="form-group">
+
+          <label>
+            Capacity *
+          </label>
+
+          <input
+            type="number"
+            formControlName="capacity"
+            readonly
+          />
+
+          <small class="field-help">
+            Capacity is automatically set based on room type.
+          </small>
+
+        </div>
+
+        <!-- Occupied Beds -->
+        <div class="form-group">
+
+          <label>
+            Occupied Beds
+          </label>
+
+          <input
+            type="number"
+            formControlName="occupiedBeds"
+            min="0"
+            placeholder="0"
+          />
+
+          <small class="field-help">
+            Enter 0 for a new empty room.
+          </small>
+
+        </div>
+
+        <!-- Status -->
+        <div class="form-group">
+
+          <label>
+            Status
+          </label>
+
+          <input
+            type="text"
+            value="AVAILABLE"
+            readonly
+          />
+
+          <small class="field-help">
+            Status is calculated automatically.
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Room Preview -->
+    <div class="form-card">
+
+      <div class="form-card-header">
+
+        <h2>Room Capacity</h2>
+
+        <p>
+          Occupancy information for this room.
+        </p>
+
+      </div>
+
+      <div class="capacity-preview">
+
+        <div class="capacity-item">
+
+          <span>
+            Total Beds
+          </span>
+
+          <strong>
+            {{ roomForm.get('capacity')?.value || 0 }}
+          </strong>
+
+        </div>
+
+        <div class="capacity-item">
+
+          <span>
+            Occupied Beds
+          </span>
+
+          <strong>
+            {{ roomForm.get('occupiedBeds')?.value || 0 }}
+          </strong>
+
+        </div>
+
+        <div class="capacity-item">
+
+          <span>
+            Available Beds
+          </span>
+
+          <strong>
+            {{
+              (roomForm.get('capacity')?.value || 0) -
+              (roomForm.get('occupiedBeds')?.value || 0)
+            }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="cancel-btn"
+        routerLink="/rooms"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        class="save-btn"
+        [disabled]="saving"
+      >
+
+        @if (saving) {
+          Saving...
+        } @else {
+          Save Room
+        }
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

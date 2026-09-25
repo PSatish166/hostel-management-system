@@ -1,0 +1,373 @@
+<div class="page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Visitors</h1>
+      <p>Manage and track hostel visitors</p>
+    </div>
+
+    <!-- ADMIN ONLY -->
+    @if (isAdmin) {
+
+      <button
+        type="button"
+        class="add-button"
+        (click)="addVisitor()">
+
+        + Add Visitor
+
+      </button>
+
+    }
+
+  </div>
+
+
+  <!-- Summary Cards -->
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        👥
+      </div>
+
+      <div>
+
+        <p>Total Visitors</p>
+
+        <h2>
+          {{ totalVisitors }}
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        🟢
+      </div>
+
+      <div>
+
+        <p>Checked In</p>
+
+        <h2>
+          {{ checkedInCount }}
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        🔵
+      </div>
+
+      <div>
+
+        <p>Checked Out</p>
+
+        <h2>
+          {{ checkedOutCount }}
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon">
+        🔴
+      </div>
+
+      <div>
+
+        <p>Cancelled</p>
+
+        <h2>
+          {{ cancelledCount }}
+        </h2>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Error -->
+
+  <div
+    *ngIf="errorMessage"
+    class="alert error">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- Loading -->
+
+  <div
+    *ngIf="loading"
+    class="loading">
+
+    Loading visitors...
+
+  </div>
+
+
+  <!-- Visitors Table -->
+
+  <div
+    *ngIf="!loading && visitors.length > 0"
+    class="table-card">
+
+    <div class="table-header">
+
+      <div>
+
+        <h2>Visitor Records</h2>
+
+        <span>
+          {{ visitors.length }} visitor record(s)
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>ID</th>
+
+            <th>Visitor</th>
+
+            <th>Phone</th>
+
+            <th>Student</th>
+
+            <th>Relation</th>
+
+            <th>Visit Date</th>
+
+            <th>Check In</th>
+
+            <th>Check Out</th>
+
+            <th>Purpose</th>
+
+            <th>Status</th>
+
+            <th>Remarks</th>
+
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let visitor of visitors">
+
+            <td>
+              #{{ visitor.id }}
+            </td>
+
+
+            <td>
+
+              <strong>
+                {{ visitor.visitorName }}
+              </strong>
+
+            </td>
+
+
+            <td>
+              {{ visitor.phone }}
+            </td>
+
+
+            <td>
+
+              <strong>
+                {{ getStudentName(visitor) }}
+              </strong>
+
+            </td>
+
+
+            <td>
+
+              <span
+                *ngIf="visitor.relation">
+
+                {{ visitor.relation }}
+
+              </span>
+
+              <span
+                class="muted"
+                *ngIf="!visitor.relation">
+
+                -
+
+              </span>
+
+            </td>
+
+
+            <td>
+              {{ formatDate(visitor.visitDate) }}
+            </td>
+
+
+            <td>
+              {{ formatTime(visitor.checkInTime) }}
+            </td>
+
+
+            <td>
+              {{ formatTime(visitor.checkOutTime) }}
+            </td>
+
+
+            <td>
+              {{ visitor.purpose }}
+            </td>
+
+
+            <td>
+
+              <span
+                class="badge status"
+                [ngClass]="getStatusClass(visitor.status)">
+
+                {{ visitor.status }}
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div
+                class="remarks"
+                *ngIf="visitor.remarks">
+
+                {{ visitor.remarks }}
+
+              </div>
+
+              <span
+                class="muted"
+                *ngIf="!visitor.remarks">
+
+                -
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div class="actions">
+
+                <!-- ADMIN ONLY -->
+                @if (isAdmin) {
+
+                  <button
+                    type="button"
+                    class="edit-button"
+                    (click)="editVisitor(visitor.id)">
+
+                    Edit
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="delete-button"
+                    (click)="deleteVisitor(visitor.id)">
+
+                    Delete
+
+                  </button>
+
+                }
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- Empty State -->
+
+  <div
+    *ngIf="!loading && visitors.length === 0"
+    class="empty-state">
+
+    <div class="empty-icon">
+      👥
+    </div>
+
+    <h2>
+      No visitors found
+    </h2>
+
+    <p>
+      There are currently no visitor records.
+    </p>
+
+    <!-- ADMIN ONLY -->
+    @if (isAdmin) {
+
+      <button
+        type="button"
+        class="add-button"
+        (click)="addVisitor()">
+
+        + Add First Visitor
+
+      </button>
+
+    }
+
+  </div>
+
+</div>

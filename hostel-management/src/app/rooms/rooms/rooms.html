@@ -1,0 +1,353 @@
+<div class="rooms-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Rooms</h1>
+
+      <p>
+        Manage hostel rooms and occupancy information.
+      </p>
+    </div>
+
+    @if (isAdmin) {
+
+      <button
+        class="add-btn"
+        routerLink="/rooms/add"
+      >
+        + Add Room
+      </button>
+
+    }
+
+  </div>
+
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <div class="summary-icon blue">
+        🏢
+      </div>
+
+      <div>
+        <span>Total Rooms</span>
+
+        <strong>
+          {{ getTotalRooms() }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon green">
+        ✓
+      </div>
+
+      <div>
+        <span>Available Rooms</span>
+
+        <strong>
+          {{ getAvailableRooms() }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon orange">
+        ⏳
+      </div>
+
+      <div>
+        <span>Partially Occupied</span>
+
+        <strong>
+          {{ getPartialRooms() }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+      <div class="summary-icon red">
+        🔴
+      </div>
+
+      <div>
+        <span>Full Rooms</span>
+
+        <strong>
+          {{ getFullRooms() }}
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Rooms Card -->
+  <div class="rooms-card">
+
+    <!-- Toolbar -->
+    <div class="card-toolbar">
+
+      <div>
+
+        <h3>All Rooms</h3>
+
+        <p>
+          List of registered hostel rooms
+        </p>
+
+      </div>
+
+
+      <div class="toolbar-actions">
+
+        <!-- Search -->
+        <div class="search-box">
+
+          <span>🔍</span>
+
+          <input
+            type="text"
+            placeholder="Search rooms..."
+            (input)="searchRooms($any($event.target).value)"
+          >
+
+        </div>
+
+
+        <!-- Filter -->
+        <button
+          type="button"
+          class="filter-btn"
+        >
+          ⚙ Filter
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- Rooms Table -->
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Room Number</th>
+
+            <th>Floor</th>
+
+            <th>Room Type</th>
+
+            <th>Capacity</th>
+
+            <th>Occupied</th>
+
+            <th>Available</th>
+
+            <th>Status</th>
+
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <!-- Loading -->
+          @if (loading) {
+
+            <tr>
+
+              <td
+                colspan="8"
+                class="message-cell"
+              >
+                Loading rooms...
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- No Rooms -->
+          @else if (filteredRooms.length === 0) {
+
+            <tr>
+
+              <td
+                colspan="8"
+                class="message-cell"
+              >
+                No rooms found.
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- Rooms -->
+          @else {
+
+            @for (
+              room of filteredRooms;
+              track room.id
+            ) {
+
+              <tr>
+
+                <!-- Room Number -->
+                <td>
+
+                  <strong>
+                    {{ room.roomNumber }}
+                  </strong>
+
+                </td>
+
+
+                <!-- Floor -->
+                <td>
+                  {{ room.floor }}
+                </td>
+
+
+                <!-- Room Type -->
+                <td>
+                  {{ room.roomType }}
+                </td>
+
+
+                <!-- Capacity -->
+                <td>
+                  {{ room.capacity }}
+                </td>
+
+
+                <!-- Occupied -->
+                <td>
+                  {{ room.occupiedBeds ?? 0 }}
+                </td>
+
+
+                <!-- Available -->
+                <td>
+                  {{ getAvailableBeds(room) }}
+                </td>
+
+
+                <!-- Status -->
+                <td>
+
+                  @if (
+                    room.status === 'AVAILABLE'
+                  ) {
+
+                    <span class="status available">
+                      Available
+                    </span>
+
+                  }
+
+                  @else if (
+                    room.status === 'PARTIAL'
+                  ) {
+
+                    <span class="status partial">
+                      Partially Occupied
+                    </span>
+
+                  }
+
+                  @else {
+
+                    <span class="status full">
+                      Full
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- Actions -->
+                <td>
+
+                  <div class="action-buttons">
+
+                    @if (isAdmin) {
+
+                      <!-- Edit -->
+                      <button
+                        type="button"
+                        title="Edit"
+                        (click)="editRoom(room.id)"
+                      >
+                        ✏
+                      </button>
+
+
+                      <!-- Delete -->
+                      <button
+                        type="button"
+                        title="Delete"
+                        (click)="deleteRoom(room.id)"
+                      >
+                        🗑
+                      </button>
+
+                    }
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- Pagination -->
+    <div class="pagination">
+
+      <span>
+        Showing {{ filteredRooms.length }} room(s)
+      </span>
+
+    </div>
+
+  </div>
+
+</div>

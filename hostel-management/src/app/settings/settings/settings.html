@@ -1,0 +1,244 @@
+<div class="settings-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1>Settings</h1>
+      <p>Manage hostel system preferences and configuration</p>
+    </div>
+  </div>
+
+
+  <!-- Hostel Information -->
+  <div class="settings-card">
+
+    <div class="card-header">
+      <div class="header-icon">🏠</div>
+
+      <div>
+        <h2>Hostel Information</h2>
+        <p>Update your hostel's basic information</p>
+      </div>
+    </div>
+
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="hostelName">
+          Hostel Name
+        </label>
+
+        <input
+          id="hostelName"
+          type="text"
+          [(ngModel)]="hostelName"
+          placeholder="Enter hostel name"
+        />
+      </div>
+
+
+      <div class="form-group">
+        <label for="hostelPhone">
+          Phone Number
+        </label>
+
+        <input
+          id="hostelPhone"
+          type="tel"
+          [(ngModel)]="hostelPhone"
+          placeholder="Enter phone number"
+        />
+      </div>
+
+
+      <div class="form-group full-width">
+        <label for="hostelEmail">
+          Email Address
+        </label>
+
+        <input
+          id="hostelEmail"
+          type="email"
+          [(ngModel)]="hostelEmail"
+          placeholder="Enter hostel email"
+        />
+      </div>
+
+
+      <div class="form-group full-width">
+        <label for="hostelAddress">
+          Hostel Address
+        </label>
+
+        <textarea
+          id="hostelAddress"
+          rows="3"
+          [(ngModel)]="hostelAddress"
+          placeholder="Enter complete hostel address"
+        ></textarea>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Notification Settings -->
+  <div class="settings-card">
+
+    <div class="card-header">
+      <div class="header-icon">🔔</div>
+
+      <div>
+        <h2>Notifications</h2>
+        <p>Choose which hostel activities should generate notifications</p>
+      </div>
+    </div>
+
+
+    <div class="toggle-list">
+
+      <div class="toggle-item">
+
+        <div class="toggle-info">
+          <strong>Email Notifications</strong>
+
+          <span>
+            Receive important system notifications by email
+          </span>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="emailNotifications"
+          />
+
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+
+      <div class="toggle-item">
+
+        <div class="toggle-info">
+          <strong>Complaint Notifications</strong>
+
+          <span>
+            Receive notifications when complaints are created or updated
+          </span>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="complaintNotifications"
+          />
+
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+
+      <div class="toggle-item">
+
+        <div class="toggle-info">
+          <strong>Fee Notifications</strong>
+
+          <span>
+            Receive notifications related to hostel fee records
+          </span>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="feeNotifications"
+          />
+
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+
+      <div class="toggle-item">
+
+        <div class="toggle-info">
+          <strong>Visitor Notifications</strong>
+
+          <span>
+            Receive notifications when visitor records change
+          </span>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="visitorNotifications"
+          />
+
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Appearance -->
+  <div class="settings-card">
+
+    <div class="card-header">
+      <div class="header-icon">🎨</div>
+
+      <div>
+        <h2>Appearance</h2>
+        <p>Customize the way the application interface is displayed</p>
+      </div>
+    </div>
+
+
+    <div class="toggle-item">
+
+      <div class="toggle-info">
+        <strong>Compact Mode</strong>
+
+        <span>
+          Use a more compact layout for tables and information
+        </span>
+      </div>
+
+      <label class="switch">
+        <input
+          type="checkbox"
+          [(ngModel)]="compactMode"
+        />
+
+        <span class="slider"></span>
+      </label>
+
+    </div>
+
+  </div>
+
+
+  <!-- Save -->
+  <div class="actions">
+
+    <button
+      type="button"
+      class="save-btn"
+      (click)="saveSettings()"
+    >
+      💾 Save Settings
+    </button>
+
+  </div>
+
+</div>

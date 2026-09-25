@@ -1,0 +1,295 @@
+.edit-room-page {
+  padding: 32px 40px 50px;
+  background: #f5f7fb;
+  min-height: calc(100vh - 70px);
+  box-sizing: border-box;
+}
+
+
+/* Page Header */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #172033;
+}
+
+.page-header p {
+  margin: 0;
+  color: #718096;
+  font-size: 15px;
+}
+
+
+/* Back Button */
+
+.back-btn {
+  border: 1px solid #d6dce5;
+  background: white;
+  color: #26344d;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background: #f1f4f8;
+}
+
+
+/* Form */
+
+.room-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+
+/* Form Card */
+
+.form-card {
+  background: white;
+  border-radius: 14px;
+  padding: 28px 30px;
+  box-shadow: 0 3px 14px rgba(30, 45, 70, 0.06);
+  border: 1px solid #e5e9ef;
+}
+
+.form-card-header {
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e6eaf0;
+}
+
+.form-card-header h2 {
+  margin: 0 0 7px;
+  color: #172033;
+  font-size: 21px;
+}
+
+.form-card-header p {
+  margin: 0;
+  color: #7b8798;
+  font-size: 14px;
+}
+
+
+/* Form Grid */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 25px;
+}
+
+
+/* Form Group */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  color: #26344d;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  box-sizing: border-box;
+  height: 46px;
+  padding: 0 13px;
+  border: 1px solid #d7dde6;
+  border-radius: 9px;
+  background: white;
+  color: #273449;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #3867e8;
+  box-shadow: 0 0 0 3px rgba(56, 103, 232, 0.1);
+}
+
+.form-group input[readonly] {
+  background: #f4f6f9;
+  color: #566274;
+  cursor: not-allowed;
+}
+
+
+/* Help Text */
+
+.field-help {
+  margin-top: 7px;
+  color: #8993a3;
+  font-size: 12px;
+}
+
+
+/* Validation Error */
+
+.error {
+  margin-top: 7px;
+  color: #dc3545;
+  font-size: 12px;
+}
+
+
+/* Capacity Preview */
+
+.capacity-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.capacity-item {
+  background: #f7f9fc;
+  border: 1px solid #e3e8ef;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.capacity-item span {
+  display: block;
+  margin-bottom: 8px;
+  color: #788497;
+  font-size: 13px;
+}
+
+.capacity-item strong {
+  color: #172033;
+  font-size: 25px;
+}
+
+
+/* Form Actions */
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.cancel-btn,
+.save-btn {
+  border: none;
+  border-radius: 9px;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancel-btn {
+  background: white;
+  border: 1px solid #d4dae3;
+  color: #344054;
+}
+
+.cancel-btn:hover {
+  background: #f2f4f7;
+}
+
+.save-btn {
+  background: #3867e8;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #2f58ca;
+}
+
+.save-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+
+/* Loading */
+
+.loading-card {
+  background: white;
+  min-height: 260px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 14px rgba(30, 45, 70, 0.06);
+}
+
+.loading-card p {
+  margin-top: 18px;
+  color: #667085;
+}
+
+.loader {
+  width: 42px;
+  height: 42px;
+  border: 5px solid #e4e8ef;
+  border-top-color: #3867e8;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* Responsive */
+
+@media (max-width: 800px) {
+
+  .edit-room-page {
+    padding: 25px 20px 40px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .capacity-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+  }
+
+  .cancel-btn,
+  .save-btn {
+    flex: 1;
+  }
+}

@@ -1,0 +1,296 @@
+<div class="page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Edit Attendance</h1>
+      <p>Update the attendance record for a hostel student</p>
+    </div>
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="cancel()">
+
+      ← Back to Attendance
+
+    </button>
+
+  </div>
+
+
+  <!-- Loading -->
+  <div
+    *ngIf="loading"
+    class="loading-state">
+
+    <div class="loading-spinner"></div>
+
+    <p>Loading attendance record...</p>
+
+  </div>
+
+
+  <!-- Error Message -->
+  <div
+    *ngIf="errorMessage && !loading"
+    class="alert error">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- Success Message -->
+  <div
+    *ngIf="successMessage"
+    class="alert success">
+
+    {{ successMessage }}
+
+  </div>
+
+
+  <!-- Edit Form -->
+  <div
+    *ngIf="!loading && attendanceForm"
+    class="form-wrapper">
+
+    <div class="form-card">
+
+      <!-- Form Header -->
+      <div class="form-header">
+
+        <h2>Attendance Details</h2>
+
+        <p>
+          Update the details below and save your changes.
+        </p>
+
+      </div>
+
+
+      <form
+        [formGroup]="attendanceForm"
+        (ngSubmit)="updateAttendance()">
+
+
+        <!-- Student -->
+        <div class="form-group">
+
+          <label for="studentId">
+            Student <span class="required">*</span>
+          </label>
+
+          <select
+            id="studentId"
+            formControlName="studentId">
+
+            <option value="">
+              Select Student
+            </option>
+
+            <option
+              *ngFor="let student of students"
+              [value]="student.id">
+
+              {{ getStudentName(student) }}
+
+            </option>
+
+          </select>
+
+
+          <small
+            class="field-error"
+            *ngIf="
+              attendanceForm.get('studentId')?.touched &&
+              attendanceForm.get('studentId')?.invalid
+            ">
+
+            Please select a student.
+
+          </small>
+
+
+          <small
+            class="loading-text"
+            *ngIf="loadingStudents">
+
+            Loading students...
+
+          </small>
+
+        </div>
+
+
+        <!-- Attendance Date -->
+        <div class="form-group">
+
+          <label for="attendanceDate">
+            Attendance Date
+            <span class="required">*</span>
+          </label>
+
+          <input
+            id="attendanceDate"
+            type="date"
+            formControlName="attendanceDate" />
+
+
+          <small
+            class="field-error"
+            *ngIf="
+              attendanceForm.get('attendanceDate')?.touched &&
+              attendanceForm.get('attendanceDate')?.invalid
+            ">
+
+            Attendance date is required.
+
+          </small>
+
+        </div>
+
+
+        <!-- Status -->
+        <div class="form-group">
+
+          <label for="status">
+            Status <span class="required">*</span>
+          </label>
+
+          <select
+            id="status"
+            formControlName="status">
+
+            <option value="PRESENT">
+              Present
+            </option>
+
+            <option value="ABSENT">
+              Absent
+            </option>
+
+            <option value="LATE">
+              Late
+            </option>
+
+            <option value="LEAVE">
+              Leave
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Time Row -->
+        <div class="form-row">
+
+
+          <!-- Check In -->
+          <div class="form-group">
+
+            <label for="checkInTime">
+              Check In Time
+            </label>
+
+            <input
+              id="checkInTime"
+              type="time"
+              formControlName="checkInTime" />
+
+            <small class="field-help">
+              Not required for Absent or Leave.
+            </small>
+
+          </div>
+
+
+          <!-- Check Out -->
+          <div class="form-group">
+
+            <label for="checkOutTime">
+              Check Out Time
+            </label>
+
+            <input
+              id="checkOutTime"
+              type="time"
+              formControlName="checkOutTime" />
+
+            <small class="field-help">
+              Must be after check-in time.
+            </small>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- Remarks -->
+        <div class="form-group">
+
+          <label for="remarks">
+            Remarks
+          </label>
+
+          <textarea
+            id="remarks"
+            rows="4"
+            maxlength="500"
+            formControlName="remarks"
+            placeholder="Enter any attendance remarks..."></textarea>
+
+          <small class="field-help">
+            Maximum 500 characters.
+          </small>
+
+        </div>
+
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+
+
+          <!-- Cancel -->
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="cancel()"
+            [disabled]="saving">
+
+            Cancel
+
+          </button>
+
+
+          <!-- Update -->
+          <button
+            type="submit"
+            class="submit-button"
+            [disabled]="saving">
+
+            <span *ngIf="!saving">
+              Update Attendance
+            </span>
+
+            <span *ngIf="saving">
+              Updating...
+            </span>
+
+          </button>
+
+
+        </div>
+
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>

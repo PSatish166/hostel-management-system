@@ -1,0 +1,401 @@
+<div class="page-container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+
+    <div>
+      <h1>Edit Fee</h1>
+      <p>Update the student's fee and payment details.</p>
+    </div>
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="cancel()">
+      ← Back to Fees
+    </button>
+
+  </div>
+
+
+  <!-- Error Message -->
+  <div
+    class="message error-message"
+    *ngIf="errorMessage">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- Success Message -->
+  <div
+    class="message success-message"
+    *ngIf="successMessage">
+
+    {{ successMessage }}
+
+  </div>
+
+
+  <!-- Loading -->
+  <div
+    class="loading-message"
+    *ngIf="loadingFee">
+
+    Loading fee details...
+
+  </div>
+
+
+  <!-- Fee Form -->
+  <div
+    class="form-card"
+    *ngIf="!loadingFee">
+
+    <div class="card-header">
+
+      <h2>Fee Information</h2>
+
+      <p>
+        Update the student's fee and payment details.
+      </p>
+
+    </div>
+
+
+    <form
+      [formGroup]="feeForm"
+      (ngSubmit)="updateFee()"
+      class="fee-form">
+
+
+      <!-- Student -->
+      <div class="form-group">
+
+        <label for="studentId">
+
+          Student
+          <span class="required">*</span>
+
+        </label>
+
+
+        <select
+          id="studentId"
+          formControlName="studentId">
+
+          <option value="">
+
+            {{
+              loadingStudents
+                ? 'Loading students...'
+                : 'Select student'
+            }}
+
+          </option>
+
+
+          <option
+            *ngFor="let student of students"
+            [value]="student.id">
+
+            {{ getStudentName(student) }}
+
+          </option>
+
+        </select>
+
+
+        <small
+          class="field-error"
+          *ngIf="
+            feeForm.get('studentId')?.invalid &&
+            feeForm.get('studentId')?.touched
+          ">
+
+          Student is required.
+
+        </small>
+
+      </div>
+
+
+      <!-- Fee Type -->
+      <div class="form-group">
+
+        <label for="feeType">
+
+          Fee Type
+          <span class="required">*</span>
+
+        </label>
+
+
+        <select
+          id="feeType"
+          formControlName="feeType">
+
+          <option value="">
+            Select fee type
+          </option>
+
+          <option value="Hostel Fee">
+            Hostel Fee
+          </option>
+
+          <option value="Mess Fee">
+            Mess Fee
+          </option>
+
+          <option value="Maintenance Fee">
+            Maintenance Fee
+          </option>
+
+          <option value="Security Deposit">
+            Security Deposit
+          </option>
+
+          <option value="Other">
+            Other
+          </option>
+
+        </select>
+
+
+        <small
+          class="field-error"
+          *ngIf="
+            feeForm.get('feeType')?.invalid &&
+            feeForm.get('feeType')?.touched
+          ">
+
+          Fee type is required.
+
+        </small>
+
+      </div>
+
+
+      <!-- Amount Row -->
+      <div class="form-row">
+
+
+        <!-- Fee Amount -->
+        <div class="form-group">
+
+          <label for="amount">
+
+            Fee Amount
+            <span class="required">*</span>
+
+          </label>
+
+
+          <div class="input-with-symbol">
+
+            <span>₹</span>
+
+            <input
+              id="amount"
+              type="number"
+              min="0.01"
+              step="0.01"
+              formControlName="amount"
+              placeholder="Enter fee amount">
+
+          </div>
+
+
+          <small
+            class="field-error"
+            *ngIf="
+              feeForm.get('amount')?.touched
+            ">
+
+            {{ getAmountError() }}
+
+          </small>
+
+        </div>
+
+
+        <!-- Paid Amount -->
+        <div class="form-group">
+
+          <label for="paidAmount">
+
+            Paid Amount
+
+          </label>
+
+
+          <div class="input-with-symbol">
+
+            <span>₹</span>
+
+            <input
+              id="paidAmount"
+              type="number"
+              min="0"
+              step="0.01"
+              formControlName="paidAmount"
+              placeholder="Enter paid amount">
+
+          </div>
+
+
+          <small
+            class="field-error"
+            *ngIf="
+              feeForm.get('paidAmount')?.touched
+            ">
+
+            {{ getPaidAmountError() }}
+
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- Balance Preview -->
+      <div class="balance-preview">
+
+        <span>
+          Remaining Balance
+        </span>
+
+        <strong>
+
+          ₹{{ getBalance().toFixed(2) }}
+
+        </strong>
+
+      </div>
+
+
+      <!-- Date Row -->
+      <div class="form-row">
+
+
+        <!-- Due Date -->
+        <div class="form-group">
+
+          <label for="dueDate">
+
+            Due Date
+            <span class="required">*</span>
+
+          </label>
+
+
+          <input
+            id="dueDate"
+            type="date"
+            formControlName="dueDate">
+
+
+          <small
+            class="field-error"
+            *ngIf="
+              feeForm.get('dueDate')?.invalid &&
+              feeForm.get('dueDate')?.touched
+            ">
+
+            Due date is required.
+
+          </small>
+
+        </div>
+
+
+        <!-- Paid Date -->
+        <div class="form-group">
+
+          <label for="paidDate">
+
+            Paid Date
+
+          </label>
+
+
+          <input
+            id="paidDate"
+            type="date"
+            formControlName="paidDate">
+
+
+          <small class="field-help">
+
+            Select this when the fee has been fully paid.
+
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- Remarks -->
+      <div class="form-group">
+
+        <label for="remarks">
+
+          Remarks
+
+        </label>
+
+
+        <textarea
+          id="remarks"
+          rows="4"
+          formControlName="remarks"
+          placeholder="Enter any additional remarks">
+        </textarea>
+
+      </div>
+
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="cancel()"
+          [disabled]="saving">
+
+          Cancel
+
+        </button>
+
+
+        <button
+          type="submit"
+          class="save-button"
+          [disabled]="saving">
+
+          <span *ngIf="!saving">
+
+            Update Fee
+
+          </span>
+
+
+          <span *ngIf="saving">
+
+            Updating...
+
+          </span>
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
