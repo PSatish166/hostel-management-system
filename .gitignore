@@ -1,0 +1,27 @@
+
+# Angular frontend
+hostel-management/node_modules/
+hostel-management/dist/
+hostel-management/.angular/
+hostel-management/coverage/
+
+# Spring Boot backend
+hostel-management-backend/target/
+hostel-management-backend/build/
+hostel-management-backend/src/main/resources/application.properties
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# IDE and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
